@@ -42,7 +42,7 @@
 					<div class="flex_ft">
 						<div class="flex flexalign">
 							<span @click="zan(item.id)">点赞icon {{item.ups.length}}</span>
-							<span>回复</span>
+							<span @click="huifufn(item.id)">回复</span>
 						</div>
 					</div>
 				</div>
@@ -53,11 +53,11 @@
 		<section class="flex huifu">
 			<div class="flex_bd">
 				<div class="textBox">
-					<input type="text" v-model.trim="text_hf" class="text_hf" />
+					<input type="text" v-model.trim="hfData.content" class="text_hf" />
 				</div>
 			</div>
 			<div class="flex_ft">
-				<button type="button" class="btn_hf" @click="huifufn">发送</button>
+				<button type="button" class="btn_hf" @click="huifufn()">发送</button>
 			</div>
 		</section>
 	</article>
@@ -75,7 +75,10 @@ export default {
 				replies: []
 			},
 			id: '',
-			text_hf: ''
+			hfData: {
+				id: "",
+				content: ""
+			}
 		}
 	},
 	mixins: [mixin],
@@ -132,22 +135,23 @@ export default {
 				_this.collect = "收藏";
 			})
 		},
-		huifufn() {
+		huifufn(id) {
 			let _this = this;
-			if (!!this.text_hf) {
-				this.$http.post(_this.$api + '/topic/' + _this.id + '/replies', {
-					accesstoken: _this.$token,
-					content: _this.text_hf,
-					reply_id: ''
-				}).then((res) => {
+			if(!!id) this.hfData.id=id;
 
-					console.log(res);
-				}).catch((res) => {
-					console.log(res);
-				})
-			} else {
-				console.log("回复不为空");
-			}
+			// if (!!this.hfData.content) {
+			// 	this.$http.post(_this.$api + '/topic/' + _this.id + '/replies', {
+			// 		accesstoken: _this.$token,
+			// 		content: _this.hfData.content,
+			// 		reply_id: ''
+			// 	}).then((res) => {
+			// 		console.log(res.data);
+			// 	}).catch((res) => {
+			// 		console.log(res);
+			// 	})
+			// } else {
+			// 	console.log("回复不为空");
+			// }
 		},
 		zan(id) {
 			let _this = this;
@@ -155,8 +159,9 @@ export default {
 			this.$http.post(_this.$api + "/reply/" + id + "/ups", {
 				accesstoken: _this.$token
 			}).then(res => {
-
-				console.log(res);
+				console.log(res.data);
+			}).catch(error=>{
+				console.log(error);
 			})
 		}
 	}
