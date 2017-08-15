@@ -1,0 +1,271 @@
+html, body, h1, h2, h3, h4, h5, h6, div, dl, dt, dd, ul, ol, li, p, blockquote, pre, hr, figure, table, caption, th, td, form, fieldset, legend, input, button, textarea, menu {
+    margin: 0;
+    padding: 0;
+}
+
+header, footer, section, article, aside, nav, hgroup, address, figure, figcaption, menu, details {
+    display: block;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+caption,
+th {
+    text-align: left;
+    font-weight: normal;
+}
+
+html, body, fieldset, img, iframe, abbr {
+    border: 0;
+}
+
+i, cite,
+em, var,
+address, dfn {
+    font-style: normal;
+}
+
+li {
+    list-style: none;
+}
+
+pre,
+code,
+kbd,
+samp {
+    font-family: inherit;
+}
+
+q:before,
+q:after {
+    content: none;
+}
+
+textarea {
+    overflow: auto;
+    resize: none;
+}
+
+label,
+summary {
+    cursor: default;
+}
+
+a,
+button {
+    cursor: pointer;
+}
+
+h1, h2, h3, h4, h5, h6, em, strong, b {
+    font-weight: normal;
+}
+
+del, ins, u, s, a, a:hover {
+    text-decoration: none;
+}
+
+body, textarea, input, button, select {
+    font-size: .16rem;
+    font-family: 'Microsoft YaHei', 'Avenir', Helvetica, Arial, sans-serif;
+    color: #333;
+    outline: 0;
+    border: none;
+}
+
+body {
+    background: #f2f2f2;
+}
+
+a,
+a:hover {
+    color: #333;
+    color: inherit;
+}
+
+.clear {
+    /**+height:1%;*/
+    *zoom: 1;
+}
+.clear:after {
+    content: '.';
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+[v-cloak] {
+  display: none;
+}
+.bg-white {
+    width: 100%;
+    background-color: #fff;
+}
+
+/*layout start*/
+.flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+.flexstar {
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+    align-items: flex-start;
+}
+.flexalign {
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.flex_hd {
+    float: left;
+}
+.flex_bd {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: hidden;
+}
+.flex_ft {
+    float: right;
+}
+/*layout end*/
+
+/*线条 start*/
+.line-t,
+.line-b,
+.line-tb {
+    position: relative;
+}
+.line-t:after,
+.line-b:after,
+.line-tb:after,
+.line-tb:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: -100%;
+    border-top: 1px solid #ccc;
+    -webkit-transform: scale(.5);
+    -webkit-transform-origin: 0 0;
+}
+.line-t:after {
+    top: 0;
+}
+.line-b:after {
+    bottom: 0;
+}
+.line-tb:after {
+    bottom: 0;
+}
+.line-tb:before {
+    top: 0;
+}
+/*线条 end*/
+
+/*margin, padding  start*/
+.mg5 {
+    margin-left: .066667rem;
+    margin-right: .066667rem;
+    /*margin: 0 .066667rem;*/
+}
+.mgs5 {
+    margin-top: .066667rem;
+    margin-bottom: .066667rem;
+    /*margin: .066667rem 0;*/
+}
+.mgl5 {
+    margin-left: .066667rem;
+}
+.mgr5 {
+    margin-right: .066667rem;
+}
+.mgt5 {
+    margin-top: .066667rem;
+}
+.mgb5 {
+    margin-bottom: .066667rem;
+}
+
+.mg10 {
+    margin-left: .133333rem;
+    margin-right: .133333rem;
+    /*margin: 0 .133333rem;*/
+}
+.mgs10 {
+    margin-top: .133333rem;
+    margin-bottom: .133333rem;
+    /*margin: .133333rem 0;*/
+}
+.mgl10 {
+    margin-left: .133333rem;
+}
+.mgr10 {
+    margin-right: .133333rem;
+}
+.mgt10 {
+    margin-top: .133333rem;
+}
+.mgb10 {
+    margin-bottom: .133333rem;
+}
+.pd10 {
+    padding: 0 .133333rem;
+}
+.pds10 {
+    padding: .133333rem 0;
+}
+.pdl10 {
+    padding-left: .133333rem;
+}
+.pdr10 {
+    padding-right: .133333rem;
+}
+.pdt10 {
+    padding-top: .133333rem;
+}
+.pdb10 {
+    padding-bottom: .133333rem;
+}
+/*margin, padding  end*/
+
+/*标签*/
+.tag {
+	margin-right: .066667rem;
+	padding: .013333rem .053333rem;
+	font-size: 12px;
+	font-family: "Helvetica Neue";
+	color: #666;
+	border-radius: 3px;
+	background-color: #e5e5e5;
+    /*background-color: #f57c00;*/
+}
+
+.tag-top {
+	color: #fff;
+	background-color: #2196f3;
+}
+
+.tag-good {
+	color: #fff;
+	background-color: #81c784;
+}
+
+.tag-ask {
+	color: #fff;
+	background-color: #f57c00;
+}
+
+.tag-share {
+	color: #fff;
+	background-color: #fb470f;
+}
+/*标签 end*/
