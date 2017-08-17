@@ -103,7 +103,7 @@ export default {
 			display: block;
 			margin: 0;
 			width: 100%;
-			min-height: 4.5rem;
+			min-height: 4rem;
 			height: auto;
 			line-height: 1.6;
 		}

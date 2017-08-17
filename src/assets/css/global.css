@@ -75,10 +75,6 @@ body, textarea, input, button, select {
     border: none;
 }
 
-body {
-    background: #f2f2f2;
-}
-
 a,
 a:hover {
     color: #333;
@@ -218,10 +214,12 @@ a:hover {
     margin-bottom: .133333rem;
 }
 .pd10 {
-    padding: 0 .133333rem;
+    padding-left: .133333rem;
+    padding-right: .133333rem;
 }
 .pds10 {
-    padding: .133333rem 0;
+    padding-top: .133333rem;
+    padding-bottom: .133333rem;
 }
 .pdl10 {
     padding-left: .133333rem;

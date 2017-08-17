@@ -15,7 +15,7 @@
 			<div class="flex_bd">
 				<div class="flex flexalign">
 					<p class="text">
-						<span class="tag tag-lou">楼主</span>{{detaildata.author.loginname}}</p>
+						<span class="tag tag-lou">作者</span>{{detaildata.author.loginname}}</p>
 					<div class="tips">{{getTime(detaildata.create_at)}}创建 · {{detaildata.visit_count}}次浏览</div>
 				</div>
 			</div>
@@ -35,13 +35,16 @@
 						<div class="flex flexalign">
 							<!--<p><span class="floor">{{index+1}}L</span>{{item.author.loginname}}</p>-->
 							<p>
-								<span class="floor">#{{index+1}}</span>{{item.author.loginname}}</p>
+								<span class="floor">#{{index+1}}</span>
+								{{item.author.loginname}}
+								<span class="tag tag-lou" v-if="item.author.loginname==detaildata.author.loginname">作者</span>
+							</p>
 							<span>回复时间：{{getTime(item.create_at)}}</span>
 						</div>
 					</div>
 					<div class="flex_ft">
 						<div class="flex flexalign">
-							<span @click="zan(item.id)">点赞icon {{item.ups.length}}</span>
+							<span @click="zanfn(item.id)" :class="{zan: item.is_uped || item.ups.length!=0}">赞 {{item.ups.length}}</span>
 							<span @click="huifufn(item.id)">回复</span>
 						</div>
 					</div>
@@ -137,30 +140,32 @@ export default {
 		},
 		huifufn(id) {
 			let _this = this;
-			if(!!id) this.hfData.id=id;
+			console.log(id);
+			if (!!id) this.hfData.id = id;
 
-			// if (!!this.hfData.content) {
-			// 	this.$http.post(_this.$api + '/topic/' + _this.id + '/replies', {
-			// 		accesstoken: _this.$token,
-			// 		content: _this.hfData.content,
-			// 		reply_id: ''
-			// 	}).then((res) => {
-			// 		console.log(res.data);
-			// 	}).catch((res) => {
-			// 		console.log(res);
-			// 	})
-			// } else {
-			// 	console.log("回复不为空");
-			// }
+			if (!!this.hfData.content) {
+				this.$http.post(_this.$api + '/topic/' + _this.id + '/replies', {
+					accesstoken: _this.$token,
+					content: _this.hfData.content,
+					reply_id: _this.hfData.id
+				}).then((res) => {
+					console.log(res.data);
+				}).catch((res) => {
+					console.log(res);
+				})
+			} else {
+				console.log("回复不为空");
+			}
 		},
-		zan(id) {
+
+		zanfn(id) {
 			let _this = this;
 			console.log(id)
 			this.$http.post(_this.$api + "/reply/" + id + "/ups", {
 				accesstoken: _this.$token
 			}).then(res => {
 				console.log(res.data);
-			}).catch(error=>{
+			}).catch(error => {
 				console.log(error);
 			})
 		}
@@ -284,11 +289,11 @@ export default {
 				height: .6rem;
 				box-sizing: border-box;
 			}
+			.zan {
+				color: red;
+			}
 			.floor {
-				margin-right: .133333rem; // padding: 0 .066667rem;
-				// color: #fff;
-				// background-color: #6b727d;
-				// border-radius: 2px;
+				margin-right: .133333rem;
 				color: #19d431;
 			}
 			.replyCon {
@@ -296,7 +301,7 @@ export default {
 				padding: .133333rem .066667rem;
 				a {
 					color: #08c;
-					word-wrap: break-word; // word-break: break-all;
+					word-wrap: break-word;
 				}
 				p {
 					line-height: 1.6;

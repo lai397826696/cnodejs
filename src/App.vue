@@ -1,18 +1,21 @@
 <template>
-	<div id="app">
+	<div id="app" :style="{marginBottom: footnavshow?'0.733333rem':''}">
 		<Headers></Headers>
 		<keep-alive>
 			<router-view></router-view>
 		</keep-alive>
+		<Footnav></Footnav>
 		<div class="slideBar">
 			<a href="javascript:;" v-if="gotoshow" class="scrollTop" @click="gotoback">Top</a>
-			<a href="javascript:;" class="release" @click="release">发布</a>
+			<a href="javascript:;" v-if="releaseshow" class="release" @click="release">发布</a>
 		</div>
 	</div>
 </template>
 
 <script>
 import Headers from './pages/Headers'
+import Footnav from './pages/Footnav'
+import { mapState } from 'vuex'
 export default {
 	name: 'app',
 	data() {
@@ -27,6 +30,13 @@ export default {
 	},
 	components: {
 		Headers,
+		Footnav
+	},
+	computed: {
+		...mapState([
+			'releaseshow',
+			'footnavshow'
+		])
 	},
 	methods: {
 		scrolltop() {
@@ -48,9 +58,14 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+#app {
+	margin-bottom: .733333rem; // padding-bottom: 5px;
+	background: #f2f2f2;
+}
+
 .slideBar {
 	position: fixed;
-	bottom: .4rem;
+	bottom: 10%;
 	right: .266667rem;
 	z-index: 10;
 	width: .533333rem;

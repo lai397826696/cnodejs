@@ -19,7 +19,10 @@ export default new Router({
 			path: '/topics',
 			// redirect: '/',
 			name: '',
-			component: LazyLoading("List")
+			component: LazyLoading("List"),
+			meta: {
+				footnavshow: true
+			}
 		},
 		{
 			path: '/good',
@@ -51,13 +54,55 @@ export default new Router({
 			name: 'details',
 			component: LazyLoading("Details"),
 			meta: {
-				returnshow: true
+				returnshow: true,
+				footnavshow: false
 			}
 		},
 		{
 			path: '/topic',
 			name: 'topic',
 			component: LazyLoading("Topics"),
+			meta: {
+				returnshow: true,
+				footnavshow: true
+			}
+			
+		},
+		{
+			path: '/user',
+			name: 'user',
+			component: LazyLoading("User"),
+			meta: {
+				returnshow: true,
+				footnavshow: true
+			}
+			
+		},
+		{
+			path: '/user/info',
+			name: 'userinfo',
+			component: LazyLoading("User"),
+			meta: {
+				returnshow: true,
+				footnavshow: false
+			}
+		},
+		{
+			path: '/login',
+			name: 'login',
+			component: LazyLoading("Login"),
+			meta: {
+				footnavshow: false
+			}
+			
+		},
+		{
+			path: '/message',
+			name: 'message',
+			// component: LazyLoading("Login"),
+			meta: {
+				footnavshow: true
+			}
 			
 		},
 	]
