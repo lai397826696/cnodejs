@@ -99,7 +99,7 @@ export default new Router({
 		{
 			path: '/message',
 			name: 'message',
-			// component: LazyLoading("Login"),
+			component: LazyLoading("Message"),
 			meta: {
 				footnavshow: true
 			}

@@ -12,7 +12,7 @@
 		</div>
 		<div class="listBox">
 			<div class="flex line-b">
-				<div class="flex_bd">消息通知</div>
+				<div class="flex_bd" @click="msgpush">消息通知</div>
 			</div>
 			<div class="flex line-b">
 				<div class="flex_bd">主题收藏</div>
@@ -50,6 +50,9 @@ export default {
 			localStorage.clear();
 			window.location.reload();
 			// this.$router.reload()
+		},
+		msgpush(){
+			this.$router.push('/message')
 		}
 	}
 }
