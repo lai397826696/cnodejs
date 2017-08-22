@@ -1,9 +1,11 @@
 <template>
 	<div class="messagePage">
-		<section class="pd10 msgBox">
-			<header class="pds10 flex">
+		<section class="msgBox">
+			<header class="line-b pd10 pds10 flex">
 				<div class="flex_bd">
-					<h3 class="msgTitle">未读信息</h3>
+					<h3 class="msgTitle">未读信息
+						<span>{{hasnot_read_messages.length}}</span>
+					</h3>
 				</div>
 				<div class="flex_ft">
 					<span>标记全部已读</span>
@@ -28,7 +30,7 @@
 							</div>
 						</div>
 						<div class="bodyCon" v-html="list.reply.content"></div>
-						<div class="topic">{{'话题：'+list.topic.title}}</div>
+						<div class="topic" @click="linkDetails(list.topic.id)">{{'话题：'+list.topic.title}}</div>
 					</article>
 				</div>
 				<div class="notedata" v-if="hasnot_read_messages.length==0">暂无信息</div>
@@ -37,7 +39,9 @@
 		<section class="msgBox">
 			<header class="line-b pd10 pds10 flex">
 				<div class="flex_bd">
-					<h3 class="msgTitle">已读信息</h3>
+					<h3 class="msgTitle">已读信息
+						<span>{{has_read_messages.length}}</span>
+					</h3>
 				</div>
 			</header>
 			<div class="pd10 conList">
@@ -59,7 +63,7 @@
 							</div>
 						</div>
 						<div class="bodyCon" v-html="list.reply.content"></div>
-						<div class="topic">{{'话题：'+list.topic.title}}</div>
+						<div class="topic" @click="linkDetails(list.topic.id)">{{'话题：'+list.topic.title}}</div>
 					</article>
 				</div>
 				<div class="notedata" v-if="has_read_messages.length==0">暂无信息</div>
@@ -80,7 +84,17 @@ export default {
 		}
 	},
 	mixins: [mixin],
-
+	beforeRouteLeave(to, from, next) {
+		// let _this = this;
+		// if (this.has_read_messages.length > 0) {
+		// 	this.$http.post(_this.$api + '/message/mark_all', {
+		// 		accesstoken: _this.userToken
+		// 	}).then(res => {
+		// 		console.log(res.data.success);
+		// 	})
+		// }
+		next();
+	},
 	computed: {
 		...mapState([
 			'userToken'
@@ -100,7 +114,12 @@ export default {
 		})
 	},
 	methods: {
-
+		linkDetails(id) {
+			this.$router.push({
+				path: 'topics/' + id
+			})
+			console.log(id);
+		}
 	}
 }
 </script>
@@ -151,10 +170,15 @@ export default {
 			-webkit-box-orient: vertical;
 			-webkit-tap-highlight-color: transparent;
 			-webkit-line-clamp: 2;
+
+			a {
+				color: #08c;
+			}
 		}
 		.topic {
 			padding: .093333rem;
-			background-color: #ddd;
+			background-color: #ececec;
+			cursor: pointer;
 		}
 	}
 	.notedata {
@@ -164,3 +188,12 @@ export default {
 	}
 }
 </style>
+<<style lang="less">
+.bodyCon {
+	a {
+		margin: 0 .066667rem;
+		color: #08c;
+	}
+}
+</style>
+

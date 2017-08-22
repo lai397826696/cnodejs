@@ -19,7 +19,7 @@
 					<div class="tips">{{getTime(detaildata.create_at)}}创建 · {{detaildata.visit_count}}次浏览</div>
 				</div>
 			</div>
-			<div class="flex_ft">
+			<div class="flex_ft" v-if="!!userToken">
 				<span @click="collectfn">{{detaildata.is_collect?'取消收藏':'收藏'}}</span>
 			</div>
 		</section>
@@ -44,7 +44,7 @@
 					</div>
 					<div class="flex_ft">
 						<div class="flex flexalign">
-							<span @click="zanfn(item.id)" :class="{zan: item.is_uped || item.ups.length!=0}">赞 {{item.ups.length}}</span>
+							<span @click="zanfn(item)" :class="{zan: item.is_uped}">赞 {{item.ups.length}}</span>
 							<span @click="huifufn(item.id)">回复</span>
 						</div>
 					</div>
@@ -68,6 +68,7 @@
 
 <script>
 import mixin from '../util/utils'
+import { mapState } from 'vuex'
 export default {
 	name: 'details',
 	data() {
@@ -92,7 +93,7 @@ export default {
 			vm.$http({
 				url: vm.$api + "/topic/" + vm.id,
 				params: {
-					accesstoken: vm.$token
+					accesstoken: vm.$store.state.userToken
 				}
 			}).then(function (response) {
 				vm.detaildata = response.data.data;
@@ -103,14 +104,16 @@ export default {
 		this.$store.commit("returnshowfn", { show: false })
 		next();
 	},
-	mounted() {
-	},
 	created() {
+		window.scrollTo(0, 0);
+	},
+	computed: {
+		...mapState([
+			'userToken',
+			'isLogin'
+		])
 	},
 	methods: {
-		https() {
-
-		},
 		collectfn() {
 			if (this.detaildata.is_collect) {
 				this.de_collect();
@@ -140,34 +143,57 @@ export default {
 		},
 		huifufn(id) {
 			let _this = this;
-			console.log(id);
 			if (!!id) this.hfData.id = id;
-
 			if (!!this.hfData.content) {
 				this.$http.post(_this.$api + '/topic/' + _this.id + '/replies', {
-					accesstoken: _this.$token,
+					accesstoken: _this.userToken,
 					content: _this.hfData.content,
 					reply_id: _this.hfData.id
 				}).then((res) => {
-					console.log(res.data);
+					if (res.data.success) {
+						_this.$http({
+							url: _this.$api + "/topic/" + _this.id,
+							params: {
+								accesstoken: _this.userToken
+							}
+						}).then(function (response) {
+							vm.detaildata = response.data.data;
+						})
+					}
 				}).catch((res) => {
 					console.log(res);
+					alert("发送错误")
 				})
 			} else {
-				console.log("回复不为空");
+				alert("回复不为空")
 			}
 		},
 
-		zanfn(id) {
+		zanfn(item) {
 			let _this = this;
-			console.log(id)
-			this.$http.post(_this.$api + "/reply/" + id + "/ups", {
-				accesstoken: _this.$token
-			}).then(res => {
-				console.log(res.data);
-			}).catch(error => {
-				console.log(error);
-			})
+			if (this.isLoginfn()) {
+				this.$http.post(_this.$api + "/reply/" + item.id + "/ups", {
+					accesstoken: _this.userToken
+				}).then(res => {
+					if (res.data.action == "down") {
+						item.is_uped = false;
+						item.ups.splice(item.ups.indexOf(_this.detaildata.author_id), 1);
+					} else {
+						item.is_uped = true;
+						item.ups.push(item.id);
+					}
+				}).catch(error => {
+					console.log(error);
+					alert("发送错误")
+				})
+			}
+		},
+		isLoginfn() {
+			if (!this.isLogin) {
+				alert("登录后才可以点赞")
+				return false;
+			}
+			return true;
 		}
 	}
 }

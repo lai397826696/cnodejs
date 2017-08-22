@@ -15,17 +15,17 @@ const mixin = {
             let lasttime = new Date(time);
             let newtime = (new Date() - lasttime) / 1000; //秒
             if (newtime < 60) {
-                return Math.ceil(newtime) + "秒前";
+                return Math.floor(newtime) + "秒前";
             } else if (newtime / 60 < 60) {
-                return Math.ceil(newtime / 60) + "分钟前";
+                return Math.floor(newtime / 60) + "分钟前";
             } else if (newtime / 3600 < 24) {
-                return Math.ceil(newtime / 3600) + "小时前";
+                return Math.floor(newtime / 3600) + "小时前";
             } else if (newtime / 3600 / 24 < 30) {
-                return Math.ceil(newtime / 3600 / 24) + "天前";
+                return Math.floor(newtime / 3600 / 24) + "天前";
             } else if (newtime / 3600 / 24 / 30 < 12) {
-                return Math.ceil(newtime / 3600 / 24 / 30) + "个月前";
+                return Math.floor(newtime / 3600 / 24 / 30) + "个月前";
             } else {
-                return Math.ceil(newtime / 3600 / 24 / 30 / 12) + "年前";
+                return Math.floor(newtime / 3600 / 24 / 30 / 12) + "年前";
             }
         }
     }

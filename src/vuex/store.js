@@ -18,7 +18,6 @@ const state = {
 
 const mutations = {
 	login(state) {
-		console.log(121212);
 		if (!state.isLogin) {
 			state.isLogin = localStorage.getItem("isLogin");
 			state.userToken = localStorage.getItem("userToken");
@@ -44,6 +43,14 @@ const actions = {
 const getters = {
 	footnavshows: state => {
 		return state.footnavshow;
+	},
+	isLoginfn: state => {
+		// if (!state.isLogin) {
+		// 	alert("登录后才可以点赞")
+		// 	return false;
+		// } else {
+		// 	return true;
+		// }
 	}
 }
 
