@@ -6,7 +6,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-	returnshow: false,
+	goback: true,
 	releaseshow: false,
 	footnavshow: false,
 	isLogin: localStorage.getItem("isLogin"),
@@ -26,8 +26,8 @@ const mutations = {
 			state.userAvatar = localStorage.getItem("userAvatar");
 		}
 	},
-	returnshowfn(state, { show }) {
-		state.returnshow = show;
+	gobackfn(state, { show }) {
+		state.goback = show;
 	},
 	releaseshowfn(state, { show }) {
 		state.releaseshow = show;
@@ -43,14 +43,6 @@ const actions = {
 const getters = {
 	footnavshows: state => {
 		return state.footnavshow;
-	},
-	isLoginfn: state => {
-		// if (!state.isLogin) {
-		// 	alert("登录后才可以点赞")
-		// 	return false;
-		// } else {
-		// 	return true;
-		// }
 	}
 }
 

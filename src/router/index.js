@@ -9,53 +9,28 @@ const LazyLoading = (name) => {
 }
 
 export default new Router({
+	mode: 'history',
 	routes: [
 		{
 			path: '/',
 			redirect: '/topics',
-			// component: LazyLoading("List")
 		},
 		{
 			path: '/topics',
 			// redirect: '/',
-			name: '',
+			name: 'topics',
 			component: LazyLoading("List"),
 			meta: {
+				goback: true,
 				footnavshow: true
 			}
-		},
-		{
-			path: '/good',
-			name: 'good',
-			component: LazyLoading("List")
-		},
-		{
-			path: '/share',
-			name: 'share',
-			component: LazyLoading("List")
-		},
-		{
-			path: '/ask',
-			name: 'ask',
-			component: LazyLoading("List")
-		},
-		{
-			path: '/job',
-			name: 'job',
-			component: LazyLoading("List")
-		},
-		{
-			path: '/dev',
-			name: 'dev',
-			component: LazyLoading("List")
 		},
 		{
 			path: '/topics/:id',
 			name: 'details',
 			component: LazyLoading("Details"),
 			meta: {
-				returnshow: true,
-				footnavshow: false
+				// footnavshow: false
 			}
 		},
 		{
@@ -63,7 +38,6 @@ export default new Router({
 			name: 'topic',
 			component: LazyLoading("Topics"),
 			meta: {
-				returnshow: true,
 				footnavshow: true
 			}
 			
@@ -73,7 +47,7 @@ export default new Router({
 			name: 'user',
 			component: LazyLoading("User"),
 			meta: {
-				returnshow: true,
+				goback: true,
 				footnavshow: true
 			}
 			
@@ -81,10 +55,9 @@ export default new Router({
 		{
 			path: '/user/info',
 			name: 'userinfo',
-			component: LazyLoading("User"),
+			component: LazyLoading("Userinfo"),
 			meta: {
-				returnshow: true,
-				footnavshow: false
+				// footnavshow: false,
 			}
 		},
 		{
@@ -92,7 +65,7 @@ export default new Router({
 			name: 'login',
 			component: LazyLoading("Login"),
 			meta: {
-				footnavshow: false
+				// footnavshow: false
 			}
 			
 		},
@@ -101,7 +74,7 @@ export default new Router({
 			name: 'message',
 			component: LazyLoading("Message"),
 			meta: {
-				footnavshow: true
+				// footnavshow: false
 			}
 			
 		},

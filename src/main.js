@@ -10,11 +10,20 @@ import './assets/js/dpr'
 import './assets/css/global.css'
 
 Vue.config.productionTip = false
-Vue.prototype.$http = axios
 // Vue.prototype.$api = api
-// token=595447be-4e58-4ebb-9fc2-8057979109d4
+
+Vue.prototype.$http = axios
 Vue.prototype.$api = "https://cnodejs.org/api/v1";
 Vue.prototype.$token = "595447be-4e58-4ebb-9fc2-8057979109d4";
+
+// Vue.prototype={
+// 	"$http": axios,
+// 	"$api": "https://cnodejs.org/api/v1",
+// 	"$token": "595447be-4e58-4ebb-9fc2-8057979109d4",
+// }
+Vue.prototype.goback=()=>{
+	console.log("goback");
+}
 
 
 router.beforeEach((to, from, next) => {
@@ -25,15 +34,14 @@ router.beforeEach((to, from, next) => {
 	} else {
 		store.commit('footnavshowfn', { show: to.meta.footnavshow });
 	}
-	
-	//是否显示发帖按钮
-	let arr = ["", "", "details"]
-	if (arr.indexOf(to.name) >= 0) {
-		store.commit('releaseshowfn', { show: true });
+
+	//是否显示返回上一步路由的顶部框
+	console.log("goback：" + to.meta.goback)
+	if (to.meta.goback) {
+		store.commit('gobackfn', { show: !to.meta.goback });
 	} else {
-		store.commit('releaseshowfn', { show: false });
+		store.commit('gobackfn', { show: !to.meta.goback });
 	}
-	
 	next();
 })
 

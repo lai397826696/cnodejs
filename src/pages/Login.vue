@@ -19,17 +19,6 @@ export default {
 			token: '595447be-4e58-4ebb-9fc2-8057979109d4'
 		}
 	},
-	beforeRouteEnter(to, from, next) {
-		next(vm => {
-			vm.$store.commit('footnavshowfn', { show: false })
-			vm.$store.commit('returnshowfn', { show: true })
-		})
-	},
-	beforeRouteLeave(to, from, next) {
-		this.$store.commit('footnavshowfn', { show: true })
-		this.$store.commit('returnshowfn', { show: false })
-		next();
-	},
 	methods: {
 		signfn() {
 			if (!!this.token) {

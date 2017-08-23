@@ -7,9 +7,9 @@
 			<div class="flex_bd">
 				<router-link to="/topic" class="list">发表</router-link>
 			</div>
-			<div class="flex_bd">
+			<!--<div class="flex_bd">
 				<router-link to="/message" class="list">消息</router-link>
-			</div>
+			</div>-->
 			<div class="flex_bd">
 				<router-link to="/user" class="list">我的</router-link>
 			</div>

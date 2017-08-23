@@ -1,6 +1,6 @@
 <template>
 	<header class="header">
-		<!--<nav class="tabflex" v-if="!returnshow">
+		<!--<nav class="tabflex" v-if="!goback">
 			<router-link to="/topics" class="flexlist">全部</router-link>
 			<router-link to="/good" class="flexlist">精华</router-link>
 			<router-link to="/share" class="flexlist">分享</router-link>
@@ -13,8 +13,8 @@
 			<span class="flexlist" @click="tab('ask')">问答</span>
 			<span class="flexlist" @click="tab('joe')">招聘</span>
 		</nav>-->
-		<nav class="detailsTab" v-if="returnshow">
-			<div class="returnBtn" @click="returnfn">返回</div>
+		<nav class="detailsTab" v-if="goback">
+			<div class="returnBtn" @click="gobackfn">返回</div>
 		</nav>
 	</header>
 </template>
@@ -29,10 +29,10 @@ export default {
 		}
 	},
 	computed: mapState([
-		'returnshow'
+		'goback'
 	]),
 	methods: {
-		returnfn() {
+		gobackfn() {
 			this.$router.go(-1)
 		}
 	}

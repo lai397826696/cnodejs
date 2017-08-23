@@ -38,15 +38,15 @@ export default {
 			content: '测试内容测试内容测试内容测试内容，来回复啊'
 		}
 	},
-	beforeRouteEnter(to, from, next) {
-		next(vm => {
-			vm.$store.commit("returnshowfn", { show: true })
-		})
-	},
-	beforeRouteLeave(to, from, next) {
-		this.$store.commit("returnshowfn", { show: false })
-		next();
-	},
+	// beforeRouteEnter(to, from, next) {
+	// 	next(vm => {
+	// 		vm.$store.commit("gobackfn", { show: true })
+	// 	})
+	// },
+	// beforeRouteLeave(to, from, next) {
+	// 	this.$store.commit("gobackfn", { show: false })
+	// 	next();
+	// },
 
 	methods: {
 		topicfn() {

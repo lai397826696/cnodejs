@@ -6,7 +6,7 @@
 		</keep-alive>
 		<Footnav></Footnav>
 		<div class="slideBar">
-			<a href="javascript:;" v-if="gotoshow" class="scrollTop" @click="gotoback">Top</a>
+			<a href="javascript:;" v-if="gotoshow" class="scrollTop" @click="goTop">Top</a>
 			<a href="javascript:;" v-if="releaseshow" class="release" @click="release">发布</a>
 		</div>
 	</div>
@@ -43,7 +43,7 @@ export default {
 			this.top = document.body.scrollTop || document.documentElement.scrollTop;
 			this.gotoshow = this.top > 300;
 		},
-		gotoback() {
+		goTop() {
 			let _this = this;
 			let top = Math.floor(this.top / 15);
 			let clear = setInterval(function () {

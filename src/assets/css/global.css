@@ -111,27 +111,33 @@ a:hover {
 }
 .flexstar {
     -webkit-box-align: start;
+    -moz-box-align: start;
     -webkit-align-items: flex-start;
     align-items: flex-start;
 }
 .flexalign {
     -webkit-box-align: start;
+    -moz-box-align: start;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -webkit-box-pack: justify;
+    -moz-box-pack: justify;
     -webkit-align-items: flex-start;
     align-items: flex-start;
     flex-direction: column;
+    -webkit-flex-direction: column;
     justify-content: space-between;
+    -webkit-justify-content: space-between;
 }
-.flex_hd {
-    float: left;
+.flex_hd,
+.flex_ft {
+    overflow: hidden;
 }
 .flex_bd {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
     flex: 1;
     overflow: hidden;
-}
-.flex_ft {
-    float: right;
 }
 /*layout end*/
 
@@ -267,3 +273,13 @@ a:hover {
 	background-color: #fb470f;
 }
 /*标签 end*/
+
+/*Markdown数据格式 start*/
+.markdown-text {
+
+}
+
+/*Markdown数据格式 end*/
+
+
+

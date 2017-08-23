@@ -1,6 +1,6 @@
 <template>
 	<div class="userBox">
-		<div class="user" v-if="!isLogin" @click="signup">
+		<div class="user" v-if="!isLogin" @click="routeSwitch('login')">
 			<span class="img_avatar"></span>
 			<span class="name">还未登录，请先登录</span>
 		</div>
@@ -12,10 +12,10 @@
 		</div>
 		<div class="listBox">
 			<div class="flex line-b">
-				<div class="flex_bd" @click="msgpush">消息通知</div>
+				<div class="flex_bd" @click="routeSwitch('userinfo')">用户信息</div>
 			</div>
 			<div class="flex line-b">
-				<div class="flex_bd">主题收藏</div>
+				<div class="flex_bd" @click="routeSwitch('message')">消息通知</div>
 			</div>
 			<div class="flex line-b">
 				<div class="flex_bd" @click="signOut">退出登录</div>
@@ -43,16 +43,19 @@ export default {
 		])
 	},
 	methods: {
-		signup() {
-			this.$router.push("/login");
-		},
 		signOut() {
 			localStorage.clear();
 			window.location.reload();
-			// this.$router.reload()
 		},
-		msgpush(){
-			this.$router.push('/message')
+		// signup() {
+		// 	this.$router.push("/login");
+		// },
+		// msgpush() {
+		// 	this.$router.push('/message')
+		// },
+		routeSwitch(str) {
+			console.log(str);
+			this.$router.push({ name: str });
 		}
 	}
 }

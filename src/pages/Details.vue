@@ -88,7 +88,7 @@ export default {
 	mixins: [mixin],
 	beforeRouteEnter(to, from, next) {
 		next(vm => {
-			vm.$store.commit("returnshowfn", { show: true });
+			// vm.$store.commit("gobackfn", { show: true });
 			vm.id = to.params.id;
 			vm.$http({
 				url: vm.$api + "/topic/" + vm.id,
@@ -100,10 +100,10 @@ export default {
 			})
 		})
 	},
-	beforeRouteLeave(to, from, next) {
-		this.$store.commit("returnshowfn", { show: false })
-		next();
-	},
+	// beforeRouteLeave(to, from, next) {
+	// 	this.$store.commit("gobackfn", { show: false })
+	// 	next();
+	// },
 	created() {
 		window.scrollTo(0, 0);
 	},
@@ -168,10 +168,14 @@ export default {
 				alert("回复不为空")
 			}
 		},
-
 		zanfn(item) {
 			let _this = this;
+			
 			if (this.isLoginfn()) {
+				if(item.author.loginname==this.detaildata.author.loginname) {
+					alert("不能帮自己点赞")
+					return false;
+				}
 				this.$http.post(_this.$api + "/reply/" + item.id + "/ups", {
 					accesstoken: _this.userToken
 				}).then(res => {

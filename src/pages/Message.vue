@@ -11,7 +11,7 @@
 					<span>标记全部已读</span>
 				</div>
 			</header>
-			<div class="conList">
+			<div class="pd10 conList">
 				<div v-if="has_read_messages.lenth!=0">
 					<article class="pds10 line-b msgReply" v-for="list in hasnot_read_messages" :key="list.id">
 						<div class="flex">
@@ -97,21 +97,25 @@ export default {
 	},
 	computed: {
 		...mapState([
-			'userToken'
+			'userToken',
+			'isLogin'
 		])
 	},
 	created() {
 		let _this = this;
-		this.$http({
-			url: _this.$api + "/messages",
-			params: {
-				accesstoken: _this.userToken
-			}
-		}).then(res => {
-			_this.hasnot_read_messages = res.data.data.hasnot_read_messages;
-			_this.has_read_messages = res.data.data.has_read_messages;
-			console.log(res.data);
-		})
+		if (this.isLoginfn()) {
+			this.$http({
+				url: _this.$api + "/messages",
+				params: {
+					accesstoken: _this.userToken
+				}
+			}).then(res => {
+				_this.hasnot_read_messages = res.data.data.hasnot_read_messages;
+				_this.has_read_messages = res.data.data.has_read_messages;
+				console.log(res.data);
+			})
+		}
+
 	},
 	methods: {
 		linkDetails(id) {
@@ -119,6 +123,13 @@ export default {
 				path: 'topics/' + id
 			})
 			console.log(id);
+		},
+		isLoginfn() {
+			if (!this.isLogin) {
+				alert("登录后方可查看信息")
+				return false;
+			}
+			return true;
 		}
 	}
 }
@@ -139,6 +150,9 @@ export default {
 		padding: .186667rem 0;
 		background-color: #fff;
 		border-radius: 4px;
+		&:last-child:after {
+			border: none;
+		}
 		img {
 			display: block;
 			margin-right: .133333rem;
