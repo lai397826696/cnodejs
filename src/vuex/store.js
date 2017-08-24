@@ -6,6 +6,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
+	scrollTop: 0,
 	goback: true,
 	releaseshow: false,
 	footnavshow: false,
@@ -34,6 +35,9 @@ const mutations = {
 	},
 	footnavshowfn(state, { show }) {
 		state.footnavshow = show;
+	},
+	scrollTopfn(state, { top }) {
+		state.scrollTop = top;
 	}
 }
 

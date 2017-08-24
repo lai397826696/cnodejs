@@ -44,18 +44,19 @@ export default {
 	},
 	methods: {
 		signOut() {
-			localStorage.clear();
-			window.location.reload();
+			if(this.isLogin) {
+				localStorage.clear();
+				window.location.reload();
+			} else {
+				alert("还没有登录呢");
+			}
 		},
-		// signup() {
-		// 	this.$router.push("/login");
-		// },
-		// msgpush() {
-		// 	this.$router.push('/message')
-		// },
 		routeSwitch(str) {
-			console.log(str);
-			this.$router.push({ name: str });
+			if(str=='login' || this.isLogin) {
+				this.$router.push({ name: str });
+			} else {
+				alert("还没有登录呢");
+			}
 		}
 	}
 }

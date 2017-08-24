@@ -1,9 +1,9 @@
 <template>
 	<div id="app" :style="{marginBottom: footnavshow?'0.733333rem':''}">
 		<Headers></Headers>
-		<keep-alive>
+		<!--<keep-alive>-->
 			<router-view></router-view>
-		</keep-alive>
+		<!--</keep-alive>-->
 		<Footnav></Footnav>
 		<div class="slideBar">
 			<a href="javascript:;" v-if="gotoshow" class="scrollTop" @click="goTop">Top</a>
@@ -59,7 +59,8 @@ export default {
 </script>
 <style lang="less" scoped>
 #app {
-	margin-bottom: .733333rem; // padding-bottom: 5px;
+	height: 100%;
+	overflow-y: scroll;
 	background: #f2f2f2;
 }
 
@@ -90,7 +91,4 @@ export default {
 	}
 }
 
-
-
-.release {}
 </style>

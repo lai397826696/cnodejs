@@ -27,7 +27,6 @@ Vue.prototype.goback=()=>{
 
 
 router.beforeEach((to, from, next) => {
-	console.log(to)
 	//是否显示底部导航栏
 	if (!!to.meta.footnavshow) {
 		store.commit('footnavshowfn', { show: to.meta.footnavshow });
@@ -36,7 +35,6 @@ router.beforeEach((to, from, next) => {
 	}
 
 	//是否显示返回上一步路由的顶部框
-	console.log("goback：" + to.meta.goback)
 	if (to.meta.goback) {
 		store.commit('gobackfn', { show: !to.meta.goback });
 	} else {

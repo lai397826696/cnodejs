@@ -2,11 +2,11 @@
 	<div class="index">
 		<header class="tabflex tab">
 			<!--<span class="flexlist" :class="{active: activeTab==''}" @click="tab('')">全部</span>
-										<span class="flexlist" :class="{active: activeTab=='good'}" @click="tab('good')">精华</span>
-										<span class="flexlist" :class="{active: activeTab=='share'}" @click="tab('share')">分享</span>
-										<span class="flexlist" :class="{active: activeTab=='ask'}" @click="tab('ask')">问答</span>
-										<span class="flexlist" :class="{active: activeTab=='job'}" @click="tab('job')">招聘</span>
-										<span class="flexlist" :class="{active: activeTab=='dev'}" @click="tab('dev')">客户端</span>-->
+						<span class="flexlist" :class="{active: activeTab=='good'}" @click="tab('good')">精华</span>
+						<span class="flexlist" :class="{active: activeTab=='share'}" @click="tab('share')">分享</span>
+						<span class="flexlist" :class="{active: activeTab=='ask'}" @click="tab('ask')">问答</span>
+						<span class="flexlist" :class="{active: activeTab=='job'}" @click="tab('job')">招聘</span>
+						<span class="flexlist" :class="{active: activeTab=='dev'}" @click="tab('dev')">客户端</span>-->
 			<span class="flexlist" v-for="(list, index) in tabdata" :key="index" :class="{active: activeNum==index}" @click="tab(list.type, index)">{{list.name}}</span>
 		</header>
 		<div class="listBox bg-white">
@@ -38,6 +38,7 @@
 
 <script>
 import mixin from '../util/utils'
+import { mapState, mapMutations } from 'vuex'
 export default {
 	name: 'list',
 	data() {
@@ -48,7 +49,6 @@ export default {
 				tab: '',
 				limit: 20
 			},
-			activeTab: '',
 			tabdata: [
 				{
 					type: "",
@@ -80,14 +80,11 @@ export default {
 	},
 	mixins: [mixin],
 	beforeRouteEnter(to, from, next) {
-		console.log('beforeRouteEnter')
 		next(vm => {
-			window.addEventListener("scroll", vm.scrollfn);
-			// vm.param.tab = to.name;
+			// window.scrollTop=vm.$store.state.scrollTop
 		});
 	},
 	beforeRouteLeave(to, from, next) {
-		console.log('beforeRouteLeave')
 		window.removeEventListener("scroll", this.scrollfn);
 		next();
 	},
@@ -98,9 +95,20 @@ export default {
 			url: _this.$api + "/topics",
 			responseType: 'json',
 			params: _this.param
-		}).then(function (response) {
+		}).then(function(response) {
 			_this.topicdata = response.data.data;
 		})
+		window.addEventListener("scroll", this.scrollfn);
+
+	},
+	mounted() {
+		console.log(this.scrollTop);
+		document.body.scrollTop = this.scrollTop
+	},
+	computed: {
+		...mapState([
+			'scrollTop'
+		])
 	},
 	methods: {
 		datahttps() {
@@ -110,14 +118,14 @@ export default {
 				url: this.$api + "/topics",
 				responseType: 'json',
 				params: _this.param
-			}).then(function (response) {
+			}).then(function(response) {
 				_this.topicdata = _this.topicdata.concat(response.data.data);
 			})
 		},
 		scrollfn() {
 			let docHeight = document.documentElement.clientHeight;
-			console.log(document.body.scrollTop)
 			let bodyheight = document.body.scrollHeight;
+			this.scrollTopfn({ top: document.body.scrollTop });
 			if (document.body.scrollTop == (bodyheight - docHeight)) {
 				this.param.page++;
 				this.datahttps();
@@ -126,16 +134,13 @@ export default {
 		tab(type, index) {
 			this.param.tab = type;
 			this.param.page = 1;
-			// this.activeTab = type;
 			this.activeNum = index;
 			this.topicdata = [];
-			this.$router.push({
-				query: {
-					tab: type
-				}
-			})
 			this.datahttps();
-		}
+		},
+		...mapMutations([
+			'scrollTopfn'
+		])
 	}
 }
 </script>

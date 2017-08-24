@@ -78,15 +78,18 @@ export default {
 				author: {},
 				replies: []
 			},
+			// detaildata: {},
 			id: '',
 			hfData: {
 				id: "",
 				content: ""
-			}
+			},
+			scrollTop: 0
 		}
 	},
 	mixins: [mixin],
 	beforeRouteEnter(to, from, next) {
+		// window.scrollTo(0, 0);
 		next(vm => {
 			// vm.$store.commit("gobackfn", { show: true });
 			vm.id = to.params.id;
@@ -95,22 +98,36 @@ export default {
 				params: {
 					accesstoken: vm.$store.state.userToken
 				}
-			}).then(function (response) {
+			}).then(function(response) {
 				vm.detaildata = response.data.data;
 			})
 		})
 	},
-	// beforeRouteLeave(to, from, next) {
-	// 	this.$store.commit("gobackfn", { show: false })
-	// 	next();
-	// },
+	beforeRouteLeave(to, from, next) {
+		this.detaildata = {
+			author: {},
+			replies: []
+		}
+		next();
+	},
 	created() {
-		window.scrollTo(0, 0);
+		// window.scrollTo(0, 0);
+	},
+	activated() {
+		console.log("进来")
+	},
+	deactivated() {
+		// this.detaildata = {
+		// 	author: {},
+		// 	replies: []
+		// }
+		console.log("离开")
 	},
 	computed: {
 		...mapState([
 			'userToken',
-			'isLogin'
+			'isLogin',
+			'userName'
 		])
 	},
 	methods: {
@@ -143,6 +160,10 @@ export default {
 		},
 		huifufn(id) {
 			let _this = this;
+			if (!this.isLogin) {
+				alert("登录后才能回复");
+				return false;
+			}
 			if (!!id) this.hfData.id = id;
 			if (!!this.hfData.content) {
 				this.$http.post(_this.$api + '/topic/' + _this.id + '/replies', {
@@ -156,8 +177,8 @@ export default {
 							params: {
 								accesstoken: _this.userToken
 							}
-						}).then(function (response) {
-							vm.detaildata = response.data.data;
+						}).then(function(response) {
+							_this.detaildata = response.data.data;
 						})
 					}
 				}).catch((res) => {
@@ -167,12 +188,14 @@ export default {
 			} else {
 				alert("回复不为空")
 			}
+			console.log(11);
+			// window.scrollTo(0,0)
+
 		},
 		zanfn(item) {
 			let _this = this;
-			
 			if (this.isLoginfn()) {
-				if(item.author.loginname==this.detaildata.author.loginname) {
+				if (item.author.loginname == this.userName) {
 					alert("不能帮自己点赞")
 					return false;
 				}
@@ -198,6 +221,14 @@ export default {
 				return false;
 			}
 			return true;
+		},
+		scrollfn() {
+			let docHeight = document.documentElement.clientHeight;
+			let bodyheight = document.body.scrollHeight;
+			if (document.body.scrollTop == (bodyheight - docHeight)) {
+				// this.scrollTop=
+				window.scrollto(document.body.scrollTop, 0)
+			}
 		}
 	}
 }

@@ -103,34 +103,22 @@ export default {
 	},
 	created() {
 		let _this = this;
-		if (this.isLoginfn()) {
-			this.$http({
-				url: _this.$api + "/messages",
-				params: {
-					accesstoken: _this.userToken
-				}
-			}).then(res => {
-				_this.hasnot_read_messages = res.data.data.hasnot_read_messages;
-				_this.has_read_messages = res.data.data.has_read_messages;
-				console.log(res.data);
-			})
-		}
-
+		this.$http({
+			url: _this.$api + "/messages",
+			params: {
+				accesstoken: _this.userToken
+			}
+		}).then(res => {
+			_this.hasnot_read_messages = res.data.data.hasnot_read_messages;
+			_this.has_read_messages = res.data.data.has_read_messages;
+		})
 	},
 	methods: {
 		linkDetails(id) {
 			this.$router.push({
-				path: 'topics/' + id
+				path: '/topics/' + id
 			})
-			console.log(id);
 		},
-		isLoginfn() {
-			if (!this.isLogin) {
-				alert("登录后方可查看信息")
-				return false;
-			}
-			return true;
-		}
 	}
 }
 </script>

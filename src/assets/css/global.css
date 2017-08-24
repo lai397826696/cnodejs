@@ -74,6 +74,9 @@ body, textarea, input, button, select {
     outline: 0;
     border: none;
 }
+html,body {
+    height: 100%;
+}
 
 a,
 a:hover {
@@ -98,6 +101,12 @@ a:hover {
 .bg-white {
     width: 100%;
     background-color: #fff;
+}
+.floatL {
+    float: left;
+}
+.floatR {
+    float: right;
 }
 
 /*layout start*/
