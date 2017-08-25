@@ -45,7 +45,7 @@
 					<div class="flex_ft">
 						<div class="flex flexalign">
 							<span @click="zanfn(item)" :class="{zan: item.is_uped}">赞 {{item.ups.length}}</span>
-							<span @click="huifufn(item.id)">回复</span>
+							<span @click="reply(item.id, item.author.loginname)">回复</span>
 						</div>
 					</div>
 				</div>
@@ -60,7 +60,7 @@
 				</div>
 			</div>
 			<div class="flex_ft">
-				<button type="button" class="btn_hf" @click="huifufn()">发送</button>
+				<button type="button" class="btn_hf" @click="huifufn">发送</button>
 			</div>
 		</section>
 	</article>
@@ -84,14 +84,12 @@ export default {
 				id: "",
 				content: ""
 			},
-			scrollTop: 0
+			scrollBottom: 0
 		}
 	},
 	mixins: [mixin],
 	beforeRouteEnter(to, from, next) {
-		// window.scrollTo(0, 0);
 		next(vm => {
-			// vm.$store.commit("gobackfn", { show: true });
 			vm.id = to.params.id;
 			vm.$http({
 				url: vm.$api + "/topic/" + vm.id,
@@ -108,20 +106,12 @@ export default {
 			author: {},
 			replies: []
 		}
+		// this.detaildata={}
 		next();
 	},
-	created() {
-		// window.scrollTo(0, 0);
-	},
-	activated() {
-		console.log("进来")
-	},
-	deactivated() {
-		// this.detaildata = {
-		// 	author: {},
-		// 	replies: []
-		// }
-		console.log("离开")
+	updated() {
+		// this.scrollfn();
+		console.log(121212);
 	},
 	computed: {
 		...mapState([
@@ -158,14 +148,21 @@ export default {
 				_this.collect = "收藏";
 			})
 		},
-		huifufn(id) {
+		reply(id, name){
+			this.hfData.id=id;
+			this.hfData.content=`@${name}`+this.hfData.content;
+		},
+		huifufn() {
 			let _this = this;
 			if (!this.isLogin) {
 				alert("登录后才能回复");
 				return false;
 			}
-			if (!!id) this.hfData.id = id;
-			if (!!this.hfData.content) {
+			if (!this.hfData.content) {
+				alert("回复内容不能为空")
+				return false;
+			}
+			if (!!this.id && !!this.name) {
 				this.$http.post(_this.$api + '/topic/' + _this.id + '/replies', {
 					accesstoken: _this.userToken,
 					content: _this.hfData.content,
@@ -179,18 +176,30 @@ export default {
 							}
 						}).then(function(response) {
 							_this.detaildata = response.data.data;
+							_this.hfData.content = "";
+							_this.scrollfn();
 						})
 					}
-				}).catch((res) => {
-					console.log(res);
-					alert("发送错误")
 				})
 			} else {
-				alert("回复不为空")
+				this.$http.post(_this.$api + '/topic/' + _this.id + '/replies', {
+					accesstoken: _this.userToken,
+					content: _this.hfData.content,
+				}).then((res) => {
+					if (res.data.success) {
+						_this.$http({
+							url: _this.$api + "/topic/" + _this.id,
+							params: {
+								accesstoken: _this.userToken
+							}
+						}).then(function(response) {
+							_this.detaildata = response.data.data;
+							_this.hfData.content = "";
+							_this.scrollfn();
+						})
+					}
+				})
 			}
-			console.log(11);
-			// window.scrollTo(0,0)
-
 		},
 		zanfn(item) {
 			let _this = this;
@@ -223,13 +232,18 @@ export default {
 			return true;
 		},
 		scrollfn() {
-			let docHeight = document.documentElement.clientHeight;
-			let bodyheight = document.body.scrollHeight;
-			if (document.body.scrollTop == (bodyheight - docHeight)) {
-				// this.scrollTop=
-				window.scrollto(document.body.scrollTop, 0)
+			let docHeight = this.$parent.$refs.app.offsetHeight;
+			let bodyheight = this.$parent.$refs.appBody.scrollHeight;
+			if ((bodyheight - docHeight) > 100) {
+				this.$parent.$refs.app.scrollTop = bodyheight - docHeight;
+				console.log(bodyheight - docHeight);
+			} else {
+				console.log("xiao yu")
 			}
-		}
+			// let docHeight = document.getElementById("app").offsetHeight;
+			// let bodyheight = document.getElementById("appBody").scrollHeight;
+			// document.getElementById("app").scrollTop = bodyheight - docHeight;
+		},
 	}
 }
 </script>

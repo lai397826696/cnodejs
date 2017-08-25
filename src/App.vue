@@ -1,13 +1,16 @@
 <template>
-	<div id="app" :style="{marginBottom: footnavshow?'0.733333rem':''}">
-		<Headers></Headers>
-		<!--<keep-alive>-->
+	<div id="app" ref="app" :style="{marginBottom: footnavshow?'7.49625%':'', height: footnavshow?'92.50375%':'100%'}">
+		<!--:style="{marginBottom: footnavshow?'0.666667rem':''}"-->
+		<div id="appBody" ref="appBody">
+			<Headers></Headers>
+			<!--<keep-alive>-->
 			<router-view></router-view>
-		<!--</keep-alive>-->
-		<Footnav></Footnav>
-		<div class="slideBar">
-			<a href="javascript:;" v-if="gotoshow" class="scrollTop" @click="goTop">Top</a>
-			<a href="javascript:;" v-if="releaseshow" class="release" @click="release">发布</a>
+			<!--</keep-alive>-->
+			<Footnav></Footnav>
+			<div class="slideBar">
+				<a href="javascript:;" v-if="gotoshow" class="scrollTop" @click="goTop">Top</a>
+				<a href="javascript:;" v-if="releaseshow" class="release" @click="release">发布</a>
+			</div>
 		</div>
 	</div>
 </template>
@@ -26,7 +29,7 @@ export default {
 		}
 	},
 	mounted() {
-		window.addEventListener("scroll", this.scrolltop);
+		document.getElementById("app").addEventListener("scroll", this.scrolltop);
 	},
 	components: {
 		Headers,
@@ -40,14 +43,15 @@ export default {
 	},
 	methods: {
 		scrolltop() {
-			this.top = document.body.scrollTop || document.documentElement.scrollTop;
+			// this.top = document.body.scrollTop || document.documentElement.scrollTop;
+			this.top = document.getElementById("app").scrollTop;
 			this.gotoshow = this.top > 300;
 		},
 		goTop() {
 			let _this = this;
 			let top = Math.floor(this.top / 15);
-			let clear = setInterval(function () {
-				document.body.scrollTop = document.documentElement.scrollTop = _this.top - top;
+			let clear = setInterval(function() {
+				document.getElementById("app").scrollTop = _this.top - top;
 				if (_this.top <= 0) clearInterval(clear)
 			}, 30);
 		},
@@ -59,9 +63,15 @@ export default {
 </script>
 <style lang="less" scoped>
 #app {
-	height: 100%;
-	overflow-y: scroll;
+	height: 92.50375%;
+	// height: .666667rem;
 	background: #f2f2f2;
+	overflow-y: scroll;
+	margin-bottom: 7.49625%;
+}
+
+#appBody {
+	// overflow-y: scroll;
 }
 
 .slideBar {
@@ -90,5 +100,4 @@ export default {
 		-webkit-appearance: none;
 	}
 }
-
 </style>

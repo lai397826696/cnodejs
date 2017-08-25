@@ -33,8 +33,6 @@ export default {
 
 		}
 	},
-	created() {
-	},
 	computed: {
 		...mapState([
 			'isLogin',

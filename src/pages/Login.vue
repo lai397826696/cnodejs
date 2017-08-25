@@ -52,10 +52,8 @@ export default {
 					_this.goback()
 					_this.userinfo(res.data.loginname);
 					_this.token="";
-					console.log("登录成功");
 				}
 			}).catch(err=>{
-				console.log(err);
 				alert("错误的token值")
 			})
 		},

@@ -76,6 +76,7 @@ body, textarea, input, button, select {
 }
 html,body {
     height: 100%;
+    overflow: hidden;
 }
 
 a,

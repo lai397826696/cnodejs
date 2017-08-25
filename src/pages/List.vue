@@ -2,11 +2,11 @@
 	<div class="index">
 		<header class="tabflex tab">
 			<!--<span class="flexlist" :class="{active: activeTab==''}" @click="tab('')">全部</span>
-						<span class="flexlist" :class="{active: activeTab=='good'}" @click="tab('good')">精华</span>
-						<span class="flexlist" :class="{active: activeTab=='share'}" @click="tab('share')">分享</span>
-						<span class="flexlist" :class="{active: activeTab=='ask'}" @click="tab('ask')">问答</span>
-						<span class="flexlist" :class="{active: activeTab=='job'}" @click="tab('job')">招聘</span>
-						<span class="flexlist" :class="{active: activeTab=='dev'}" @click="tab('dev')">客户端</span>-->
+			<span class="flexlist" :class="{active: activeTab=='good'}" @click="tab('good')">精华</span>
+			<span class="flexlist" :class="{active: activeTab=='share'}" @click="tab('share')">分享</span>
+			<span class="flexlist" :class="{active: activeTab=='ask'}" @click="tab('ask')">问答</span>
+			<span class="flexlist" :class="{active: activeTab=='job'}" @click="tab('job')">招聘</span>
+			<span class="flexlist" :class="{active: activeTab=='dev'}" @click="tab('dev')">客户端</span>-->
 			<span class="flexlist" v-for="(list, index) in tabdata" :key="index" :class="{active: activeNum==index}" @click="tab(list.type, index)">{{list.name}}</span>
 		</header>
 		<div class="listBox bg-white">
@@ -81,12 +81,16 @@ export default {
 	mixins: [mixin],
 	beforeRouteEnter(to, from, next) {
 		next(vm => {
-			// window.scrollTop=vm.$store.state.scrollTop
+			vm.$parent.$refs.app.addEventListener("scroll", vm.scrollfn);
 		});
 	},
 	beforeRouteLeave(to, from, next) {
-		window.removeEventListener("scroll", this.scrollfn);
+		this.$parent.$refs.app.removeEventListener("scroll", this.scrollfn);
 		next();
+	},
+	activated() {
+		console.log('activated:'+this.scrollTop);
+		this.$parent.$refs.app.scrollTop = this.scrollTop
 	},
 	created() {
 		let _this = this;
@@ -98,12 +102,6 @@ export default {
 		}).then(function(response) {
 			_this.topicdata = response.data.data;
 		})
-		window.addEventListener("scroll", this.scrollfn);
-
-	},
-	mounted() {
-		console.log(this.scrollTop);
-		document.body.scrollTop = this.scrollTop
 	},
 	computed: {
 		...mapState([
@@ -122,11 +120,16 @@ export default {
 				_this.topicdata = _this.topicdata.concat(response.data.data);
 			})
 		},
-		scrollfn() {
-			let docHeight = document.documentElement.clientHeight;
-			let bodyheight = document.body.scrollHeight;
-			this.scrollTopfn({ top: document.body.scrollTop });
-			if (document.body.scrollTop == (bodyheight - docHeight)) {
+		scrollfn(event) {
+			event.preventDefault();
+			let app=this.$parent.$refs.app;
+			let appBody=this.$parent.$refs.appBody;
+			let apph = app.offsetHeight;
+			let bodyh = appBody.scrollHeight;
+			console.log('scrollfn:'+app.scrollTop);
+			this.scrollTopfn({ top: app.scrollTop });
+			if (app.scrollTop == (bodyh - apph)) {
+				console.log("滚动底部")
 				this.param.page++;
 				this.datahttps();
 			}
