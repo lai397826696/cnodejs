@@ -5,10 +5,10 @@
 			<span class="name">还未登录，请先登录</span>
 		</div>
 		<div class="user" v-if="isLogin">
-			<span class="img_avatar">
+			<span class="img_avatar" @click="routeSwitch('userinfo')">
 				<img :src="userAvatar" class="useravatar" />
 			</span>
-			<span class="name">{{userName}}</span>
+			<span class="name" @click="routeSwitch('userinfo')">{{userName}}</span>
 		</div>
 		<div class="listBox">
 			<div class="flex line-b">

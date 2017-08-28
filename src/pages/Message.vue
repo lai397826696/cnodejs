@@ -160,21 +160,14 @@ export default {
 			color: #999;
 		}
 		.bodyCon {
-			margin: .16rem 0;
-			padding: 0 .133333rem; // height: .533333rem;
-			max-height: .8rem;
 			line-height: .266667rem;
 			font-size: .186667rem;
 			text-decoration: none;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			display: -webkit-box;
-			-webkit-box-orient: vertical;
-			-webkit-tap-highlight-color: transparent;
-			-webkit-line-clamp: 2;
+			
 
 			a {
 				color: #08c;
+				margin: 0 .066667rem;
 			}
 		}
 		.topic {
@@ -190,12 +183,23 @@ export default {
 	}
 }
 </style>
-<<style lang="less">
-.bodyCon {
-	a {
-		margin: 0 .066667rem;
-		color: #08c;
+<style lang="less">
+.messagePage {
+	.bodyCon {
+		padding: .066667rem;
+
+		.markdown-text {
+			padding: 0;
+			max-height: .8rem;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-tap-highlight-color: transparent;
+			-webkit-line-clamp: 2;
+		}
 	}
 }
 </style>
+
 

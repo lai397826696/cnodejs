@@ -3,9 +3,9 @@
 		<!--:style="{marginBottom: footnavshow?'0.666667rem':''}"-->
 		<div id="appBody" ref="appBody">
 			<Headers></Headers>
-			<!--<keep-alive>-->
+			<keep-alive>
 			<router-view></router-view>
-			<!--</keep-alive>-->
+			</keep-alive>
 			<Footnav></Footnav>
 			<div class="slideBar">
 				<a href="javascript:;" v-if="gotoshow" class="scrollTop" @click="goTop">Top</a>
@@ -65,7 +65,6 @@ export default {
 #app {
 	height: 92.50375%;
 	// height: .666667rem;
-	background: #f2f2f2;
 	overflow-y: scroll;
 	margin-bottom: 7.49625%;
 }

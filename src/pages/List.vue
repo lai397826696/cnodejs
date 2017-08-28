@@ -9,7 +9,7 @@
 			<span class="flexlist" :class="{active: activeTab=='dev'}" @click="tab('dev')">客户端</span>-->
 			<span class="flexlist" v-for="(list, index) in tabdata" :key="index" :class="{active: activeNum==index}" @click="tab(list.type, index)">{{list.name}}</span>
 		</header>
-		<div class="listBox bg-white">
+		<div class="listBox">
 			<div class="flex flexstar line-tb topic_list" v-for="list in topicdata" :key="list.id">
 				<div class="flex_hd">
 					<div class="avatar">
@@ -25,7 +25,7 @@
 					</div>
 					<router-link :to="'/topics/'+list.id" :title="list.title" class="title">{{list.title}}</router-link>
 					<!--<p class="title" :title="list.title">{{list.title}}</p>-->
-					<span class="time">发表时间：{{getTime(list.last_reply_at)}}</span>
+					<span class="time">最后回复：{{getTime(list.last_reply_at)}}</span>
 					<p class="count">
 						<span class="count_replies">{{list.reply_count}}</span>/
 						<span class="count_visits">{{list.visit_count}}</span>
@@ -89,7 +89,7 @@ export default {
 		next();
 	},
 	activated() {
-		console.log('activated:'+this.scrollTop);
+		console.log('activated:' + this.scrollTop);
 		this.$parent.$refs.app.scrollTop = this.scrollTop
 	},
 	created() {
@@ -122,11 +122,10 @@ export default {
 		},
 		scrollfn(event) {
 			event.preventDefault();
-			let app=this.$parent.$refs.app;
-			let appBody=this.$parent.$refs.appBody;
+			let app = this.$parent.$refs.app;
+			let appBody = this.$parent.$refs.appBody;
 			let apph = app.offsetHeight;
 			let bodyh = appBody.scrollHeight;
-			console.log('scrollfn:'+app.scrollTop);
 			this.scrollTopfn({ top: app.scrollTop });
 			if (app.scrollTop == (bodyh - apph)) {
 				console.log("滚动底部")
@@ -242,5 +241,51 @@ export default {
 .tagBox {
 	margin-bottom: .093333rem;
 	padding: .026667rem 0 0;
+}
+
+// .keyframes(@names, @num1, @num2) {
+// 	@keyframes @names {
+// 		0% {
+// 			left: @num1;
+// 		}
+// 		100% {
+// 			left: @num2;
+// 		}
+// 	}
+// }
+@keyframes lineLR1 {
+	0% {
+		left: 0;
+	}
+	100% {
+		left: 33.33%;
+	}
+}
+
+@keyframes lineLR2 {
+	0% {
+		left: 33.33%;
+	}
+	100% {
+		left: 66.66%;
+	}
+}
+
+@keyframes lineRL1 {
+	0% {
+		left: 66.66%;
+	}
+	100% {
+		left: 33.33%;
+	}
+}
+
+@keyframes lineRL2 {
+	0% {
+		left: 33.33%;
+	}
+	100% {
+		left: 0;
+	}
 }
 </style>

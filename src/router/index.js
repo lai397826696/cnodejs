@@ -38,7 +38,8 @@ export default new Router({
 			name: 'topic',
 			component: LazyLoading("Topics"),
 			meta: {
-				footnavshow: true
+				goback: true,
+				footnavshow: true,
 			}
 			
 		},
@@ -54,6 +55,14 @@ export default new Router({
 		},
 		{
 			path: '/user/info',
+			name: 'userinfo',
+			component: LazyLoading("Userinfo"),
+			meta: {
+				// footnavshow: false,
+			}
+		},
+		{
+			path: '/user/:id',
 			name: 'userinfo',
 			component: LazyLoading("Userinfo"),
 			meta: {

@@ -7,7 +7,8 @@ const mixin = {
                 ask: "问答",
                 share: "分享",
                 job: "招聘",
-                good: "精华"
+                good: "精华",
+                dev: "dev"
             }
             return arr[tab]
         },

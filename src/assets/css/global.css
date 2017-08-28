@@ -262,22 +262,18 @@ a:hover {
 	background-color: #e5e5e5;
     /*background-color: #f57c00;*/
 }
-
 .tag-top {
 	color: #fff;
 	background-color: #2196f3;
 }
-
 .tag-good {
 	color: #fff;
 	background-color: #81c784;
 }
-
 .tag-ask {
 	color: #fff;
 	background-color: #f57c00;
 }
-
 .tag-share {
 	color: #fff;
 	background-color: #fb470f;
@@ -286,9 +282,57 @@ a:hover {
 
 /*Markdown数据格式 start*/
 .markdown-text {
-
+    /*padding: .133333rem .066667rem;*/
+    /*padding: .133333rem 0;*/
 }
-
+.markdown-text h1,
+.markdown-text h2,
+.markdown-text h3 {
+    margin: .2rem 0;
+    color: #324057;
+    font-weight: bold;
+}
+.markdown-text h1 {
+    font-size: .32rem;
+}
+.markdown-text h2 {
+    font-size: .293333rem;
+}
+.markdown-text h3 {
+    font-size: .266667rem;
+}
+.markdown-text ul,
+.markdown-text li {
+    list-style: inside;
+}
+.markdown-text strong {
+    font-weight: bold;
+}
+.markdown-text blockquote {
+    padding: 0 .133333rem;
+    color: #777;
+    border: 4px border #ddd;
+}
+.markdown-text li {
+    margin: .093333rem 0;
+}
+.markdown-text a {
+    color: #08c;
+    word-wrap: break-word;
+}
+.markdown-text a code {
+        color: #324057;
+    }
+.markdown-text p {
+    margin: .093333rem 0;
+    font-size: .186667rem;
+    line-height: 1.6;
+}
+.markdown-text img {
+    display: block;
+    width: 100%;
+    /*margin: .066667rem 0;*/
+}
 /*Markdown数据格式 end*/
 
 

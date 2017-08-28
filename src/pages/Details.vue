@@ -26,7 +26,7 @@
 		<section class="bg-white detailCon" v-html="detaildata.content"></section>
 		<div class="replyBox" v-if="detaildata.replies.length!=0">
 			<div class="line-b replyNum">{{detaildata.replies.length+"条回复"}}</div>
-			<article class="item" v-for="(item, index) in detaildata.replies" :key="item.id">
+			<article class="line-b item" v-for="(item, index) in detaildata.replies" :key="item.id">
 				<div class="flex">
 					<div class="flex_hd">
 						<img :src="item.author.avatar_url" :title="item.author.avatar_url" class="img_author" />
@@ -148,9 +148,9 @@ export default {
 				_this.collect = "收藏";
 			})
 		},
-		reply(id, name){
-			this.hfData.id=id;
-			this.hfData.content=`@${name}`+this.hfData.content;
+		reply(id, name) {
+			this.hfData.id = id;
+			this.hfData.content = `@${name}` + this.hfData.content;
 		},
 		huifufn() {
 			let _this = this;
@@ -234,6 +234,7 @@ export default {
 		scrollfn() {
 			let docHeight = this.$parent.$refs.app.offsetHeight;
 			let bodyheight = this.$parent.$refs.appBody.scrollHeight;
+			this.$parent.$refs.app.scrollTop = bodyheight - docHeight;
 			if ((bodyheight - docHeight) > 100) {
 				this.$parent.$refs.app.scrollTop = bodyheight - docHeight;
 				console.log(bodyheight - docHeight);
@@ -292,50 +293,10 @@ export default {
 		}
 	}
 	.detailCon {
+		margin-top: .133333rem;
 		margin-bottom: .2rem;
 		line-height: 1.6;
 		font-size: .186667rem;
-		box-shadow: 0 5px 7px hsla(202, 4%, 62%, .24);
-		.markdown-text {
-			h1,
-			h2,
-			h3 {
-				margin: .2rem 0;
-				color: #324057;
-				font-weight: bold;
-			}
-			h1 {
-				font-size: .32rem;
-				text-align: center;
-			}
-			h2 {
-				font-size: .293333rem;
-			}
-			h3 {
-				font-size: .266667rem;
-			}
-			ul,
-			li {
-				list-style: inside;
-			}
-			li {
-				margin: .093333rem 0;
-			}
-			a {
-				color: #08c;
-				code {
-					color: #324057;
-				}
-			}
-			p {
-				margin: .093333rem 0;
-				font-size: .186667rem;
-			}
-			img {
-				display: block;
-				width: 100% !important;
-			}
-		}
 	}
 	.tag-lou {
 		color: #fff;
@@ -348,9 +309,10 @@ export default {
 		}
 		.item {
 			margin-bottom: .173333rem;
-			padding: .093333rem;
+			margin-bottom: .133333rem;
+			margin: .066667rem 0;
+			padding: .093333rem 0;
 			border-radius: 3px;
-			box-shadow: 0 5px 7px hsla(202, 4%, 62%, .24);
 			background-color: #fff;
 			.img_author {
 				display: block;
@@ -372,21 +334,7 @@ export default {
 				color: #19d431;
 			}
 			.replyCon {
-				margin: .133333rem 0 0;
-				padding: .133333rem .066667rem;
-				a {
-					color: #08c;
-					word-wrap: break-word;
-				}
-				p {
-					line-height: 1.6;
-					font-size: .186667rem;
-				}
-				img {
-					display: block;
-					margin: .066667rem 0;
-					width: 100%;
-				}
+				padding: .093333rem .066667rem 0;
 			}
 		}
 	}
