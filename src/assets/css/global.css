@@ -75,8 +75,15 @@ body, textarea, input, button, select {
     border: none;
 }
 html,body {
+    position: relative;
+    margin: 0 auto;
+    max-width: 640px;
     height: 100%;
     overflow: hidden;
+    background-color: #fff;
+}
+html {
+    background-color: #999;
 }
 
 a,
@@ -288,7 +295,8 @@ a:hover {
 .markdown-text h1,
 .markdown-text h2,
 .markdown-text h3 {
-    margin: .2rem 0;
+    margin: .133333rem 0;
+    padding: .066667rem 0;
     color: #324057;
     font-weight: bold;
 }
@@ -305,6 +313,15 @@ a:hover {
 .markdown-text li {
     list-style: inside;
 }
+.markdown-text li {
+    margin: .093333rem 0;
+}
+.markdown-text p {
+    margin: .093333rem 0;
+    font-size: .186667rem;
+    line-height: 1.6;
+    word-break: break-all;
+}
 .markdown-text strong {
     font-weight: bold;
 }
@@ -313,27 +330,25 @@ a:hover {
     color: #777;
     border: 4px border #ddd;
 }
-.markdown-text li {
-    margin: .093333rem 0;
-}
 .markdown-text a {
     color: #08c;
     word-wrap: break-word;
 }
-.markdown-text a code {
-        color: #324057;
-    }
-.markdown-text p {
-    margin: .093333rem 0;
-    font-size: .186667rem;
-    line-height: 1.6;
+.markdown-text code {
+    padding: 1px 2px;
+    color: #324057;
+    background-color: #fafafa;
 }
 .markdown-text img {
     display: block;
     width: 100%;
-    /*margin: .066667rem 0;*/
+    margin: .066667rem 0;
 }
 /*Markdown数据格式 end*/
 
-
+.notedata {
+    padding: .4rem 0;
+    font-size: .266667rem;
+    text-align: center;
+}
 

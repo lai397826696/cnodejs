@@ -5,14 +5,18 @@
 			<span class="name">还未登录，请先登录</span>
 		</div>
 		<div class="user" v-if="isLogin">
-			<span class="img_avatar" @click="routeSwitch('userinfo')">
+			<router-link :to="'/user/'+userName" class="img_avatar">
 				<img :src="userAvatar" class="useravatar" />
-			</span>
-			<span class="name" @click="routeSwitch('userinfo')">{{userName}}</span>
+			</router-link>
+			<router-link :to="'/user/'+userName" class="name">
+				{{userName}}
+			</router-link>
 		</div>
 		<div class="listBox">
 			<div class="flex line-b">
-				<div class="flex_bd" @click="routeSwitch('userinfo')">用户信息</div>
+				<div class="flex_bd">
+					<router-link :to="'/user/'+userName" tag="p">用户信息</router-link>
+				</div>
 			</div>
 			<div class="flex line-b">
 				<div class="flex_bd" @click="routeSwitch('message')">消息通知</div>
@@ -64,15 +68,18 @@ export default {
 .userBox {
 	background-color: #fff;
 	.user {
-		margin: 0 auto;
-		padding-top: .933333rem;
-		width: 60%;
-		font-size: .186667rem;
+		// margin: 0 auto;
+		padding: .666667rem 0 .4rem;
+		font-size: .213333rem;
+		color: #fff;
 		text-align: center;
+		cursor: pointer;
+		background: url("../assets/user_bg.jpg") no-repeat center bottom;
+		background-size: 100%;
 	}
 	.img_avatar {
-		margin: 0 auto .133333rem;
 		display: block;
+		margin: 0 auto .133333rem;
 		width: 1.066667rem;
 		height: 1.066667rem;
 		border-radius: 50%;
@@ -85,7 +92,7 @@ export default {
 		}
 	}
 	.listBox {
-		margin-top: .266667rem;
+		cursor: pointer;
 		.flex_bd {
 			padding: .066667rem .133333rem;
 			height: .453333rem;

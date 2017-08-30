@@ -9,15 +9,15 @@
 				<a :href="'https://github.com/'+userinfoData.githubUsername">{{'https://github.com/'+userinfoData.githubUsername}}</a>
 			</p>
 			<p class="pd10 tips">
-				<span class="floatL">创建于：{{new Date(userinfoData.create_at).toLocaleString()}}</span>
+				<span class="floatL">创建于：{{new Date(userinfoData.create_at).toLocaleDateString()}}</span>
 				<span class="floatR">积分：{{userinfoData.score}}</span>
 			</p>
 		</div>
-		<div class="line-t tabBox">
+		<div class="line-tb tabBox">
 			<ul class="tab">
-				<li @click="tabconfn('recent_replies', 0)">最近回复</li>
-				<li @click="tabconfn('recent_topics', 1)">最新发布</li>
-				<li @click="tabconfn('topic_collect', 2)">话题收藏</li>
+				<li :class="{active: index==0}" @click="tabconfn('recent_replies', 0)">最近回复</li>
+				<li :class="{active: index==1}" @click="tabconfn('recent_topics', 1)">最新发布</li>
+				<li :class="{active: index==2}" @click="tabconfn('topic_collect', 2)">话题收藏</li>
 			</ul>
 			<div class="lineBox">
 				<div class="line" :class="lineSelect"></div>
@@ -38,6 +38,7 @@
 					</div>
 				</div>
 			</div>
+			<div class="notedata" v-if="infoData.length==0">暂无数据发布</div>
 		</section>
 	</div>
 </template>
@@ -57,29 +58,28 @@ export default {
 				topic_collect: null
 			},
 			index: 0,
-			dir: 0
+			dir: 0,
+			name: '',
 		}
 	},
 	mixins: [mixin],
-	beforeRouteEnter(to, from, next){
-			console.log(to);
-		next();
-	},
-	created() {
-		let _this = this;
-		this.$http({
-			url: _this.$api + "/user/" + _this.userName,
-		}).then(res => {
-			_this.userinfoData = res.data.data;
-			_this.infoDatas.recent_replies = _this.userinfoData.recent_replies;
-			_this.infoDatas.recent_topics = _this.userinfoData.recent_topics;
-		})
+	beforeRouteEnter(to, from, next) {
+		next(vm => {
+			let name=to.params.name;
+			vm.$http({
+				url: vm.$api + "/user/" + name,
+			}).then(res => {
+				vm.$data.userinfoData = res.data.data;
+				vm.$data.infoDatas.recent_replies = res.data.data.recent_replies;
+				vm.$data.infoDatas.recent_topics = res.data.data.recent_topics;
+			})
 
-		this.$http({
-			url: _this.$api + "/topic_collect/" + _this.userName,
-		}).then(res => {
-			_this.infoDatas.topic_collect = res.data.data;
-		})
+			vm.$http({
+				url: vm.$api + "/topic_collect/" + name,
+			}).then(res => {
+				vm.$data.infoDatas.topic_collect = res.data.data;
+			})
+		});
 	},
 	computed: {
 		...mapState([
@@ -121,8 +121,11 @@ export default {
 .userinfo {
 	background-color: #fff;
 	.userBox {
-		margin: .666667rem 0 .266667rem;
+		padding: .533333rem 0 .266667rem;
 		font-size: .186667rem;
+		color: #fff;
+		background: url("../assets/user_bg.jpg") no-repeat center top;
+		background-size: 100%;
 		.userImg {
 			margin: 0 auto;
 			padding: 2px;
@@ -151,15 +154,14 @@ export default {
 		.tips {
 			overflow: hidden;
 			.floatR {
-				color: #80bd01;
+				color: #7fff00;
 			}
 		}
 	}
 	.tabBox {
 		position: relative;
 		overflow: hidden;
-		background-color: #474a4f;
-		color: #fff;
+		color: #999;
 		.tab {
 			// margin: 0 .05%;
 			overflow: hidden;
@@ -172,13 +174,15 @@ export default {
 			line-height: .586667rem;
 			font-size: .186667rem;
 			text-align: center;
+			cursor: pointer;
 		}
-		.active {}
+		.active {
+			color: #474a4f;
+		}
 	}
 	.lineBox {
 		width: 100%;
 		.line {
-			// float: left;
 			position: absolute;
 			left: 0;
 			bottom: 0;
@@ -186,7 +190,7 @@ export default {
 			width: 33.33%;
 			height: 2px;
 			overflow: hidden;
-			background-color: #2196f3;
+			background-color: #474a4f;
 			display: inline-block;
 		}
 		.lineLR1 {

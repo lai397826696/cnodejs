@@ -41,7 +41,7 @@ export default new Router({
 				goback: true,
 				footnavshow: true,
 			}
-			
+
 		},
 		{
 			path: '/user',
@@ -51,7 +51,7 @@ export default new Router({
 				goback: true,
 				footnavshow: true
 			}
-			
+
 		},
 		{
 			path: '/user/info',
@@ -62,7 +62,7 @@ export default new Router({
 			}
 		},
 		{
-			path: '/user/:id',
+			path: '/user/:name',
 			name: 'userinfo',
 			component: LazyLoading("Userinfo"),
 			meta: {
@@ -76,7 +76,7 @@ export default new Router({
 			meta: {
 				// footnavshow: false
 			}
-			
+
 		},
 		{
 			path: '/message',
@@ -85,7 +85,7 @@ export default new Router({
 			meta: {
 				// footnavshow: false
 			}
-			
+
 		},
 	]
 })

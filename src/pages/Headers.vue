@@ -89,6 +89,7 @@ export default {
 		color: #fff;
 		font-size: .213333rem;
 		text-align: center;
+		cursor: pointer;
 	}
 }
 </style>

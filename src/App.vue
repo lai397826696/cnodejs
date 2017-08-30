@@ -3,8 +3,8 @@
 		<!--:style="{marginBottom: footnavshow?'0.666667rem':''}"-->
 		<div id="appBody" ref="appBody">
 			<Headers></Headers>
-			<keep-alive>
-			<router-view></router-view>
+			<keep-alive exclude='details,userinfo'>
+				<router-view></router-view>
 			</keep-alive>
 			<Footnav></Footnav>
 			<div class="slideBar">
@@ -33,7 +33,7 @@ export default {
 	},
 	components: {
 		Headers,
-		Footnav
+		Footnav,
 	},
 	computed: {
 		...mapState([
@@ -63,9 +63,8 @@ export default {
 </script>
 <style lang="less" scoped>
 #app {
-	height: 92.50375%;
-	// height: .666667rem;
-	overflow-y: scroll;
+	height: 92.50375%; // height: .666667rem;
+	overflow-y: auto;
 	margin-bottom: 7.49625%;
 }
 

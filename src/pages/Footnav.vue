@@ -40,6 +40,8 @@ export default {
 	left: 0;
 	right: 0;
 	z-index: 100;
+	margin: 0 auto;
+	max-width: 640px;
 	background-color: #fff;
 
 	.nav {

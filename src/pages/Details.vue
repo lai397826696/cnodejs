@@ -10,7 +10,9 @@
 		</header>
 		<section class="flex authorBox">
 			<div class="flex_hd">
-				<img :src="detaildata.author.avatar_url" class="img_author" />
+				<router-link :to="'/user/'+detaildata.author.loginname">
+					<img :src="detaildata.author.avatar_url" class="img_author" />
+				</router-link>
 			</div>
 			<div class="flex_bd">
 				<div class="flex flexalign">
@@ -20,39 +22,43 @@
 				</div>
 			</div>
 			<div class="flex_ft" v-if="!!userToken">
-				<span @click="collectfn">{{detaildata.is_collect?'取消收藏':'收藏'}}</span>
+				<span class="collection" @click="collectfn">{{detaildata.is_collect?'取消收藏':'收藏'}}</span>
+				<span class="edit" @click="editfn" v-if="detaildata.author.loginname==userName">编辑</span>
 			</div>
 		</section>
-		<section class="bg-white detailCon" v-html="detaildata.content"></section>
-		<div class="replyBox" v-if="detaildata.replies.length!=0">
+		<section class="detailCon" v-html="detaildata.content"></section>
+		<div class="replyBox">
 			<div class="line-b replyNum">{{detaildata.replies.length+"条回复"}}</div>
-			<article class="line-b item" v-for="(item, index) in detaildata.replies" :key="item.id">
-				<div class="flex">
-					<div class="flex_hd">
-						<img :src="item.author.avatar_url" :title="item.author.avatar_url" class="img_author" />
-					</div>
-					<div class="flex_bd">
-						<div class="flex flexalign">
-							<!--<p><span class="floor">{{index+1}}L</span>{{item.author.loginname}}</p>-->
-							<p>
-								<span class="floor">#{{index+1}}</span>
-								{{item.author.loginname}}
-								<span class="tag tag-lou" v-if="item.author.loginname==detaildata.author.loginname">作者</span>
-							</p>
-							<span>回复时间：{{getTime(item.create_at)}}</span>
+			<div class="con" v-if="detaildata.replies.length!=0">
+				<article class="line-b item" v-for="(item, index) in detaildata.replies" :key="item.id">
+					<div class="flex">
+						<div class="flex_hd">
+							<router-link :to="'/user/'+item.author.loginname">
+								<img :src="item.author.avatar_url" :title="item.author.avatar_url" class="img_author" />
+							</router-link>
+						</div>
+						<div class="flex_bd">
+							<div class="flex flexalign">
+								<p>
+									<span class="floor">#{{index+1}}</span>
+									{{item.author.loginname}}
+									<span class="tag tag-lou" v-if="item.author.loginname==detaildata.author.loginname">作者</span>
+								</p>
+								<span>回复时间：{{getTime(item.create_at)}}</span>
+							</div>
+						</div>
+						<div class="flex_ft">
+							<div class="flex flexalign">
+								<span @click="zanfn(item)" :class="{zan: item.is_uped}">赞 {{item.ups.length}}</span>
+								<span @click="reply(item.id, item.author.loginname)">回复</span>
+							</div>
 						</div>
 					</div>
-					<div class="flex_ft">
-						<div class="flex flexalign">
-							<span @click="zanfn(item)" :class="{zan: item.is_uped}">赞 {{item.ups.length}}</span>
-							<span @click="reply(item.id, item.author.loginname)">回复</span>
-						</div>
-					</div>
-				</div>
-				<div class="replyCon" v-html="item.content"></div>
-			</article>
+					<div class="replyCon" v-html="item.content"></div>
+				</article>
+			</div>
+			<div class="notedata" v-if="detaildata.replies.length==0">暂无回复</div>
 		</div>
-		<div class="notedata" v-if="detaildata.replies.length==0">暂无回复</div>
 		<section class="flex huifu">
 			<div class="flex_bd">
 				<div class="textBox">
@@ -78,7 +84,6 @@ export default {
 				author: {},
 				replies: []
 			},
-			// detaildata: {},
 			id: '',
 			hfData: {
 				id: "",
@@ -90,6 +95,7 @@ export default {
 	mixins: [mixin],
 	beforeRouteEnter(to, from, next) {
 		next(vm => {
+			vm.$loading();
 			vm.id = to.params.id;
 			vm.$http({
 				url: vm.$api + "/topic/" + vm.id,
@@ -97,21 +103,14 @@ export default {
 					accesstoken: vm.$store.state.userToken
 				}
 			}).then(function(response) {
+				vm.$loading.close();
 				vm.detaildata = response.data.data;
 			})
 		})
 	},
 	beforeRouteLeave(to, from, next) {
-		this.detaildata = {
-			author: {},
-			replies: []
-		}
-		// this.detaildata={}
+		this.detaildata={}
 		next();
-	},
-	updated() {
-		// this.scrollfn();
-		console.log(121212);
 	},
 	computed: {
 		...mapState([
@@ -150,7 +149,7 @@ export default {
 		},
 		reply(id, name) {
 			this.hfData.id = id;
-			this.hfData.content = `@${name}` + this.hfData.content;
+			this.hfData.content = `@${name} ` + this.hfData.content;
 		},
 		huifufn() {
 			let _this = this;
@@ -241,10 +240,19 @@ export default {
 			} else {
 				console.log("xiao yu")
 			}
-			// let docHeight = document.getElementById("app").offsetHeight;
-			// let bodyheight = document.getElementById("appBody").scrollHeight;
-			// document.getElementById("app").scrollTop = bodyheight - docHeight;
 		},
+		editfn(){
+			console.log(this.detaildata.content.replace(/<.*?>/gi,''));
+			this.$router.push({
+				name: 'topic',
+				query: {
+					id: this.detaildata.id,
+					title: this.detaildata.title,
+					tab: this.detaildata.tab,
+					content: this.detaildata.content.replace(/<.*?>/gi,''),
+				}
+			})
+		}
 	}
 }
 </script>
@@ -273,6 +281,7 @@ export default {
 			color: #324057;
 			font-size: .213333rem;
 			line-height: .32rem;
+			word-break: break-all;
 		}
 	}
 	.authorBox {
@@ -291,12 +300,26 @@ export default {
 		.flexalign {
 			height: .6rem;
 		}
+		.collection {
+			display: block;
+			padding: .026667rem .133333rem;
+			background-color: #80bd01;
+			color: #fff;
+			cursor: pointer;
+			border-radius: 2px;
+		}
+		.edit {
+			cursor: pointer;
+		}
 	}
 	.detailCon {
 		margin-top: .133333rem;
 		margin-bottom: .2rem;
 		line-height: 1.6;
 		font-size: .186667rem;
+		h1,h2,h3 {
+			border-bottom: 1px dotted #ccc;
+		}
 	}
 	.tag-lou {
 		color: #fff;
@@ -344,6 +367,8 @@ export default {
 		right: 0;
 		bottom: 0;
 		z-index: 10;
+		margin: 0 auto;
+		max-width: 640px;
 		padding: .08rem 0;
 		font-size: 0;
 		background-color: #474a4f;
@@ -369,12 +394,6 @@ export default {
 			text-align: center;
 			cursor: pointer;
 		}
-	}
-	.notedata {
-		padding: .4rem 0;
-		font-size: .266667rem;
-		text-align: center;
-		box-shadow: 0 5px 7px hsla(202, 4%, 62%, .24);
 	}
 }
 </style>

@@ -12,10 +12,10 @@
 		<div class="listBox">
 			<div class="flex flexstar line-tb topic_list" v-for="list in topicdata" :key="list.id">
 				<div class="flex_hd">
-					<div class="avatar">
+					<router-link :to="'/user/'+list.author.loginname" class="avatar">
 						<img :src="list.author.avatar_url" :alt="list.author.loginname" :title="list.author.loginname" class="img_avatar" />
 						<p class="user_avatar">{{list.author.loginname}}</p>
-					</div>
+					</router-link>
 				</div>
 				<div class="flex_bd">
 					<div class="tagBox">
@@ -33,11 +33,13 @@
 				</div>
 			</div>
 		</div>
+		<Alert :isshows="true" titles="adfafasfafas"></Alert>
 	</div>
 </template>
 
 <script>
 import mixin from '../util/utils'
+import Alert from '../components/Alert'
 import { mapState, mapMutations } from 'vuex'
 export default {
 	name: 'list',
@@ -75,7 +77,7 @@ export default {
 					name: "客户端"
 				},
 			],
-			activeNum: 0
+			activeNum: 0,
 		}
 	},
 	mixins: [mixin],
@@ -93,15 +95,14 @@ export default {
 		this.$parent.$refs.app.scrollTop = this.scrollTop
 	},
 	created() {
-		let _this = this;
-		this.$http({
-			method: "get",
-			url: _this.$api + "/topics",
-			responseType: 'json',
-			params: _this.param
-		}).then(function(response) {
-			_this.topicdata = response.data.data;
-		})
+		this.$loading();
+		this.datahttps();
+	},
+	mounted(){
+		// this.$alert('传入参数显示弹出信息');
+	},
+	components: {
+		Alert	
 	},
 	computed: {
 		...mapState([
@@ -117,7 +118,12 @@ export default {
 				responseType: 'json',
 				params: _this.param
 			}).then(function(response) {
-				_this.topicdata = _this.topicdata.concat(response.data.data);
+				_this.$loading.close();
+				if(_this.topicdata.length>0) {
+					_this.topicdata = _this.topicdata.concat(response.data.data);
+				} else {
+					_this.topicdata = response.data.data;
+				}
 			})
 		},
 		scrollfn(event) {
@@ -128,7 +134,6 @@ export default {
 			let bodyh = appBody.scrollHeight;
 			this.scrollTopfn({ top: app.scrollTop });
 			if (app.scrollTop == (bodyh - apph)) {
-				console.log("滚动底部")
 				this.param.page++;
 				this.datahttps();
 			}
@@ -138,11 +143,13 @@ export default {
 			this.param.page = 1;
 			this.activeNum = index;
 			this.topicdata = [];
+			this.$loading();
 			this.datahttps();
 		},
 		...mapMutations([
 			'scrollTopfn'
-		])
+		]),
+
 	}
 }
 </script>
@@ -191,6 +198,7 @@ export default {
 	color: #5d7187;
 	background-color: #fff;
 	.avatar {
+		display: block;
 		margin-top: .026667rem;
 		padding-right: .106667rem;
 		width: .933333rem;

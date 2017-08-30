@@ -18,7 +18,7 @@
 		<div class="dev-item">
 			<label>内容：</label>
 			<div class="areaBox">
-				<textarea class="dev-text dev-area" v-model.trim="content"></textarea>
+				<textarea class="dev-text dev-area" v-html="content"></textarea>
 			</div>
 		</div>
 		<div class="dev-item">
@@ -33,35 +33,56 @@ export default {
 	name: 'dev',
 	data() {
 		return {
+			topic_id: '',
 			title: '测试帖子测试帖子devdev',
 			tab: '请选择',
 			content: '测试内容测试内容测试内容测试内容，来回复啊'
 		}
 	},
-	// beforeRouteEnter(to, from, next) {
-	// 	next(vm => {
-	// 		vm.$store.commit("gobackfn", { show: true })
-	// 	})
-	// },
-	// beforeRouteLeave(to, from, next) {
-	// 	this.$store.commit("gobackfn", { show: false })
-	// 	next();
-	// },
-
+	beforeRouteEnter(to, from, next) {
+		next(vm => {
+			if (!!to.query.id) {
+				vm.topic_id = to.query.id
+				vm.tab = to.query.tab
+				vm.content = to.query.content
+				vm.title = to.query.title
+			}
+		})
+	},
+	computed: {
+		...mapState([
+			'userToken'
+		])
+	},
 	methods: {
 		topicfn() {
-			var _this = this;
+			var vm = this;
 			if (this.title.length >= 10 && this.tab != "请选择") {
+				let obj = {}, url="/topics"
+				if (!!this.topic_id) {
+					url+="/update";
+					obj = {
+						accesstoken: this.userToken,
+						topic_id: this.topic_id,
+						title: this.title,
+						tab: this.tab,
+						content: this.content,
+					}
+				} else {
+					obj = {
+						accesstoken: this.userToken,
+						title: this.title,
+						tab: this.tab,
+						content: this.content,
+					}
+				}
 				if (this.tab == "dev") {
 					this.$http({
 						method: "post",
-						url: _this.$api + "topics",
-						data: {
-							accesstoken: _this.$token,
-							title: _this.title,
-							tab: _this.tab,
-							content: _this.content
-						}
+						url: vm.$api + url,
+						data: obj
+					}).then(res=>{
+						console.log(res.data.success);
 					})
 				} else {
 					console.log("没有发布至客户端区");

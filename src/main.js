@@ -8,20 +8,21 @@ import store from './vuex/store'
 import api from './assets/js/api'
 import './assets/js/dpr'
 import './assets/css/global.css'
+import VueLoading from './plugin/loading'
+import VueAlter from './plugin/alert'
 
 Vue.config.productionTip = false
-// Vue.prototype.$api = api
+
+Vue.use(VueLoading, {
+	container: '#app'
+});
+Vue.use(VueAlter);
 
 Vue.prototype.$http = axios
 Vue.prototype.$api = "https://cnodejs.org/api/v1";
 Vue.prototype.$token = "595447be-4e58-4ebb-9fc2-8057979109d4";
 
-// Vue.prototype={
-// 	"$http": axios,
-// 	"$api": "https://cnodejs.org/api/v1",
-// 	"$token": "595447be-4e58-4ebb-9fc2-8057979109d4",
-// }
-Vue.prototype.goback=()=>{
+Vue.prototype.goback = () => {
 	console.log("goback");
 }
 
