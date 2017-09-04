@@ -83,9 +83,9 @@ export default {
 
 	.returnBtn {
 		float: left;
-		width: .64rem;
-		height: .64rem;
-		line-height: .64rem;
+		width: .666667rem;
+		height: .666667rem;
+		line-height: .666667rem;
 		color: #fff;
 		font-size: .213333rem;
 		text-align: center;

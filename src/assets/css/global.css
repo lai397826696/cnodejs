@@ -294,7 +294,10 @@ a:hover {
 }
 .markdown-text h1,
 .markdown-text h2,
-.markdown-text h3 {
+.markdown-text h3,
+.markdown-text h4,
+.markdown-text h5,
+.markdown-text h6 {
     margin: .133333rem 0;
     padding: .066667rem 0;
     color: #324057;
@@ -309,6 +312,15 @@ a:hover {
 .markdown-text h3 {
     font-size: .266667rem;
 }
+.markdown-text h4 {
+    font-size: .24rem;
+}
+.markdown-text h5 {
+    font-size: .213333rem;
+}
+.markdown-text h6 {
+    font-size: .186667rem;
+}
 .markdown-text ul,
 .markdown-text li {
     list-style: inside;
@@ -320,7 +332,8 @@ a:hover {
     margin: .093333rem 0;
     font-size: .186667rem;
     line-height: 1.6;
-    word-break: break-all;
+    word-wrap: break-word;
+    white-space: pre-wrap;
 }
 .markdown-text strong {
     font-weight: bold;
@@ -334,10 +347,24 @@ a:hover {
     color: #08c;
     word-wrap: break-word;
 }
+.markdown-text pre.prettyprint {
+    display: block;
+    padding: 5px 7px;
+    overflow-y: auto;
+    /*word-wrap: break-word;*/
+    border-radius: 3px;
+    background-color: #e2e2e2;
+}
+.markdown-text pre.prettyprint code {
+    padding: 0;
+    border-radius: 0;
+    background-color: transparent;
+}
 .markdown-text code {
-    padding: 1px 2px;
+    padding: 1px 5px;
     color: #324057;
-    background-color: #fafafa;
+    background-color: #efefef;
+    border-radius: 3px;
 }
 .markdown-text img {
     display: block;

@@ -41,7 +41,6 @@ export default new Router({
 				goback: true,
 				footnavshow: true,
 			}
-
 		},
 		{
 			path: '/user',
@@ -51,7 +50,6 @@ export default new Router({
 				goback: true,
 				footnavshow: true
 			}
-
 		},
 		{
 			path: '/user/info',
@@ -76,7 +74,6 @@ export default new Router({
 			meta: {
 				// footnavshow: false
 			}
-
 		},
 		{
 			path: '/message',
@@ -85,7 +82,15 @@ export default new Router({
 			meta: {
 				// footnavshow: false
 			}
-
+		},
+		{
+			path: '/scroll',
+			name: 'scroll',
+			component: LazyLoading("Scroll"),
+			meta: {
+				// goback: true,
+				// footnavshow: false
+			}
 		},
 	]
 })

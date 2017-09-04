@@ -1,5 +1,5 @@
 <template>
-	<div class="userinfo">
+	<div class="userinfoPage">
 		<div class="userBox">
 			<div class="userImg">
 				<img :src="userinfoData.avatar_url" alt="">
@@ -53,9 +53,9 @@ export default {
 			userinfoData: {},
 			tab: 'recent_replies',
 			infoDatas: {
-				recent_replies: null,
-				recent_topics: null,
-				topic_collect: null
+				recent_replies: [],
+				recent_topics: [],
+				topic_collect: []
 			},
 			index: 0,
 			dir: 0,
@@ -118,7 +118,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.userinfo {
+.userinfoPage {
 	background-color: #fff;
 	.userBox {
 		padding: .533333rem 0 .266667rem;

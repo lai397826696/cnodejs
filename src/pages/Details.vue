@@ -1,5 +1,5 @@
 <template>
-	<article class="details pd10" v-cloak>
+	<article class="detailsPage pd10" v-cloak>
 		<header class="line-b hd">
 			<p class="tips">
 				<span class="tag tag-top" v-if="detaildata.top">置顶</span>
@@ -258,7 +258,7 @@ export default {
 </script>
 
 <style lang="less">
-.details {
+.detailsPage {
 	margin-bottom: .613333rem;
 	padding-top: .133333rem;
 	padding-bottom: .133333rem;

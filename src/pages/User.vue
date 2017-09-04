@@ -1,5 +1,5 @@
 <template>
-	<div class="userBox">
+	<div class="userPage">
 		<div class="user" v-if="!isLogin" @click="routeSwitch('login')">
 			<span class="img_avatar"></span>
 			<span class="name">还未登录，请先登录</span>
@@ -20,6 +20,9 @@
 			</div>
 			<div class="flex line-b">
 				<div class="flex_bd" @click="routeSwitch('message')">消息通知</div>
+			</div>
+			<div class="flex line-b">
+				<div class="flex_bd" @click="routeSwitch('scroll')">滚动指令测试</div>
 			</div>
 			<div class="flex line-b">
 				<div class="flex_bd" @click="signOut">退出登录</div>
@@ -65,7 +68,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.userBox {
+.userPage {
 	background-color: #fff;
 	.user {
 		// margin: 0 auto;

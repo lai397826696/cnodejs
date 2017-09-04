@@ -1,5 +1,5 @@
 <template>
-	<section class="dev">
+	<section class="devPage">
 		<div class="dev-item">
 			<label>标题：</label>
 			<input type="text" v-model.trim="title" placeholder="标题10个字符以上" class="dev-text" />
@@ -96,7 +96,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.dev {
+.devPage {
 	.dev-item {
 		margin: .066667rem 0;
 		padding: .066667rem .133333rem;

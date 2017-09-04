@@ -1,12 +1,12 @@
 <template>
-	<div class="index">
+	<div class="indexPage">
 		<header class="tabflex tab">
 			<!--<span class="flexlist" :class="{active: activeTab==''}" @click="tab('')">全部</span>
-			<span class="flexlist" :class="{active: activeTab=='good'}" @click="tab('good')">精华</span>
-			<span class="flexlist" :class="{active: activeTab=='share'}" @click="tab('share')">分享</span>
-			<span class="flexlist" :class="{active: activeTab=='ask'}" @click="tab('ask')">问答</span>
-			<span class="flexlist" :class="{active: activeTab=='job'}" @click="tab('job')">招聘</span>
-			<span class="flexlist" :class="{active: activeTab=='dev'}" @click="tab('dev')">客户端</span>-->
+						<span class="flexlist" :class="{active: activeTab=='good'}" @click="tab('good')">精华</span>
+						<span class="flexlist" :class="{active: activeTab=='share'}" @click="tab('share')">分享</span>
+						<span class="flexlist" :class="{active: activeTab=='ask'}" @click="tab('ask')">问答</span>
+						<span class="flexlist" :class="{active: activeTab=='job'}" @click="tab('job')">招聘</span>
+						<span class="flexlist" :class="{active: activeTab=='dev'}" @click="tab('dev')">客户端</span>-->
 			<span class="flexlist" v-for="(list, index) in tabdata" :key="index" :class="{active: activeNum==index}" @click="tab(list.type, index)">{{list.name}}</span>
 		</header>
 		<div class="listBox">
@@ -33,7 +33,6 @@
 				</div>
 			</div>
 		</div>
-		<Alert :isshows="true" titles="adfafasfafas"></Alert>
 	</div>
 </template>
 
@@ -78,6 +77,7 @@ export default {
 				},
 			],
 			activeNum: 0,
+			// show: false
 		}
 	},
 	mixins: [mixin],
@@ -91,35 +91,31 @@ export default {
 		next();
 	},
 	activated() {
-		console.log('activated:' + this.scrollTop);
 		this.$parent.$refs.app.scrollTop = this.scrollTop
 	},
-	created() {
+	beforeCreate(){
 		this.$loading();
+	},
+	created() {
 		this.datahttps();
 	},
-	mounted(){
-		// this.$alert('传入参数显示弹出信息');
-	},
 	components: {
-		Alert	
+		Alert
 	},
 	computed: {
 		...mapState([
 			'scrollTop'
-		])
+		]),
 	},
 	methods: {
 		datahttps() {
 			let _this = this;
 			this.$http({
-				method: "get",
 				url: this.$api + "/topics",
-				responseType: 'json',
 				params: _this.param
 			}).then(function(response) {
 				_this.$loading.close();
-				if(_this.topicdata.length>0) {
+				if (_this.topicdata.length > 0) {
 					_this.topicdata = _this.topicdata.concat(response.data.data);
 				} else {
 					_this.topicdata = response.data.data;
@@ -155,7 +151,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.index {
+.indexPage {
 	background-color: #eff2f7;
 }
 
@@ -251,16 +247,6 @@ export default {
 	padding: .026667rem 0 0;
 }
 
-// .keyframes(@names, @num1, @num2) {
-// 	@keyframes @names {
-// 		0% {
-// 			left: @num1;
-// 		}
-// 		100% {
-// 			left: @num2;
-// 		}
-// 	}
-// }
 @keyframes lineLR1 {
 	0% {
 		left: 0;

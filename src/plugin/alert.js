@@ -2,31 +2,29 @@ import Alert from '../components/Alert.vue'
 
 export default {
     install(Vue, vueOption = {}) {
-        const vueAlert = Vue.extend(Alert);
+        const alertConstructor = Vue.extend(Alert);
         let alert = null;
+        let alerts = [];
+        let speed = 1;
+        let userclose;
+
         let $alert = (option) => {
-            let opt = {
-                title: "提供默认的提示", //提示文字
-                time: 2000, //关闭时间，默认2s
-                callback() { }  //关闭时回调函数
-            }
+            alert = new alertConstructor().$mount()
+            document.body.appendChild(alert.$el)
+            let id = 'alert' + speed++;
+
             if (!!option) {
                 if (typeof option === 'string') {
-                    opt.title = option
+                    alert.message = option
                 } else {
                     opt = Object.assign(opt, option)
+                    alert.id = id
+                    alert.message = opt.message
+                    alert.duration = opt.duration
+                    alert.callback = opt.callback
                 }
             }
-            alert = new vueAlert().$mount()
-            alert.title = opt.title
-            document.body.appendChild(alert.$el)
-            alert.show()
-            setTimeout(function () {
-                alert.hide()
-                if (typeof opt.callback === "function") {
-                    opt.callback(alert)
-                }
-            }, opt.time);
+            alert.showfn()
         }
 
         Vue.alert = Vue.prototype.$alert = $alert
