@@ -195,7 +195,6 @@ export default {
 			text-overflow: ellipsis;
 			display: -webkit-box;
 			-webkit-box-orient: vertical;
-			-webkit-tap-highlight-color: transparent;
 			-webkit-line-clamp: 2;
 		}
 	}

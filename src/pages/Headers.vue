@@ -7,11 +7,6 @@
 			<router-link to="/ask" class="flexlist">问答</router-link>
 			<router-link to="/job" class="flexlist">招聘</router-link>
 			<router-link to="/dev" class="flexlist">客户端</router-link>
-			<span class="flexlist active" @click="tab('topics')">全部</span>
-			<span class="flexlist" @click="tab('good')">精华</span>
-			<span class="flexlist" @click="tab('shark')">分享</span>
-			<span class="flexlist" @click="tab('ask')">问答</span>
-			<span class="flexlist" @click="tab('joe')">招聘</span>
 		</nav>-->
 		<nav class="detailsTab" v-if="goback">
 			<div class="returnBtn" @click="gobackfn">返回</div>
@@ -41,6 +36,7 @@ export default {
 
 <style lang="less" scoped>
 .header {
+
 	background-color: #474a4f;
 }
 

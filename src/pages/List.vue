@@ -1,12 +1,13 @@
 <template>
 	<div class="indexPage">
+		<div class="maskbox" style="position: fixed; top: 0; left: 0; z-index: 10; width: 100%; color: red">{{maskboxnum}}</div>
 		<header class="tabflex tab">
 			<!--<span class="flexlist" :class="{active: activeTab==''}" @click="tab('')">全部</span>
-						<span class="flexlist" :class="{active: activeTab=='good'}" @click="tab('good')">精华</span>
-						<span class="flexlist" :class="{active: activeTab=='share'}" @click="tab('share')">分享</span>
-						<span class="flexlist" :class="{active: activeTab=='ask'}" @click="tab('ask')">问答</span>
-						<span class="flexlist" :class="{active: activeTab=='job'}" @click="tab('job')">招聘</span>
-						<span class="flexlist" :class="{active: activeTab=='dev'}" @click="tab('dev')">客户端</span>-->
+			<span class="flexlist" :class="{active: activeTab=='good'}" @click="tab('good')">精华</span>
+			<span class="flexlist" :class="{active: activeTab=='share'}" @click="tab('share')">分享</span>
+			<span class="flexlist" :class="{active: activeTab=='ask'}" @click="tab('ask')">问答</span>
+			<span class="flexlist" :class="{active: activeTab=='job'}" @click="tab('job')">招聘</span>
+			<span class="flexlist" :class="{active: activeTab=='dev'}" @click="tab('dev')">客户端</span>-->
 			<span class="flexlist" v-for="(list, index) in tabdata" :key="index" :class="{active: activeNum==index}" @click="tab(list.type, index)">{{list.name}}</span>
 		</header>
 		<div class="listBox">
@@ -77,6 +78,7 @@ export default {
 				},
 			],
 			activeNum: 0,
+			maskboxnum: ''
 			// show: false
 		}
 	},
@@ -126,10 +128,12 @@ export default {
 			event.preventDefault();
 			let app = this.$parent.$refs.app;
 			let appBody = this.$parent.$refs.appBody;
-			let apph = app.offsetHeight;
+			let apph = app.clientHeight;
 			let bodyh = appBody.scrollHeight;
 			this.scrollTopfn({ top: app.scrollTop });
+			this.maskboxnum=app.scrollTop+','+ apph+','+bodyh
 			if (app.scrollTop == (bodyh - apph)) {
+				this.$loading();
 				this.param.page++;
 				this.datahttps();
 			}
@@ -152,6 +156,12 @@ export default {
 
 <style lang="less" scoped>
 .indexPage {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 0;
 	background-color: #eff2f7;
 }
 

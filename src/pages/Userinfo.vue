@@ -65,7 +65,7 @@ export default {
 	mixins: [mixin],
 	beforeRouteEnter(to, from, next) {
 		next(vm => {
-			let name=to.params.name;
+			let name = to.params.name;
 			vm.$http({
 				url: vm.$api + "/user/" + name,
 			}).then(res => {
@@ -181,6 +181,8 @@ export default {
 		}
 	}
 	.lineBox {
+		position: relative;
+		z-index: 1;
 		width: 100%;
 		.line {
 			position: absolute;
@@ -204,6 +206,39 @@ export default {
 		}
 		.lineRL2 {
 			animation: lineRL2 .3s ease forwards;
+		}
+
+		@keyframes lineLR1 {
+			0% {
+				left: 0;
+			}
+			100% {
+				left: 33.33%;
+			}
+		}
+		@keyframes lineLR2 {
+			0% {
+				left: 33.33%;
+			}
+			100% {
+				left: 66.66%;
+			}
+		}
+		@keyframes lineRL1 {
+			0% {
+				left: 66.66%;
+			}
+			100% {
+				left: 33.33%;
+			}
+		}
+		@keyframes lineRL2 {
+			0% {
+				left: 33.33%;
+			}
+			100% {
+				left: 0;
+			}
 		}
 	}
 	.tabCon {
@@ -234,39 +269,6 @@ export default {
 				line-height: .293333rem;
 				font-size: .186667rem;
 			}
-		}
-	}
-
-	@keyframes lineLR1 {
-		0% {
-			left: 0;
-		}
-		100% {
-			left: 33.33%;
-		}
-	}
-	@keyframes lineLR2 {
-		0% {
-			left: 33.33%;
-		}
-		100% {
-			left: 66.66%;
-		}
-	}
-	@keyframes lineRL1 {
-		0% {
-			left: 66.66%;
-		}
-		100% {
-			left: 33.33%;
-		}
-	}
-	@keyframes lineRL2 {
-		0% {
-			left: 33.33%;
-		}
-		100% {
-			left: 0;
 		}
 	}
 }

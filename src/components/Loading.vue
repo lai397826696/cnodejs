@@ -36,6 +36,7 @@ export default {
 	right: 0;
 	z-index: 99999;
 	background-color: rgba(0, 0, 0, .1);
+	background-color: transparent;
 }
 
 .loading {

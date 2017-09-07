@@ -17,7 +17,7 @@ export default {
                 if (typeof option === 'string') {
                     alert.message = option
                 } else {
-                    opt = Object.assign(opt, option)
+                    let opt = Object.assign(alert.$data, option)
                     alert.id = id
                     alert.message = opt.message
                     alert.duration = opt.duration

@@ -1,6 +1,7 @@
 html, body, h1, h2, h3, h4, h5, h6, div, dl, dt, dd, ul, ol, li, p, blockquote, pre, hr, figure, table, caption, th, td, form, fieldset, legend, input, button, textarea, menu {
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent;
 }
 
 header, footer, section, article, aside, nav, hgroup, address, figure, figcaption, menu, details {
@@ -172,6 +173,7 @@ a:hover {
     position: absolute;
     left: 0;
     right: -100%;
+    z-index: 0;
     border-top: 1px solid #ccc;
     transform: scale(.5);
     transform-origin: 0 0;

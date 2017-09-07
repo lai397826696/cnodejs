@@ -15,7 +15,7 @@
 		<div class="listBox">
 			<div class="flex line-b">
 				<div class="flex_bd">
-					<router-link :to="'/user/'+userName" tag="p">用户信息</router-link>
+					<router-link :to="'/user/'+userName">用户信息</router-link>
 				</div>
 			</div>
 			<div class="flex line-b">

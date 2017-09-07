@@ -1,16 +1,15 @@
 <template>
 	<div id="app" ref="app" :style="{marginBottom: footnavshow?'7.49625%':'', height: footnavshow?'92.50375%':'100%'}">
-		<!--:style="{marginBottom: footnavshow?'0.666667rem':''}"-->
-		<div id="appBody" ref="appBody">
-			<Headers></Headers>
+		<Headers></Headers>
+		<section class="appBody" id="appBody" ref="appBody">
 			<keep-alive exclude='details,userinfo'>
 				<router-view></router-view>
 			</keep-alive>
-			<Footnav></Footnav>
-			<div class="slideBar">
-				<a href="javascript:;" v-if="gotoshow" class="scrollTop" @click="goTop">Top</a>
-				<a href="javascript:;" v-if="releaseshow" class="release" @click="release">发布</a>
-			</div>
+		</section>
+		<Footnav></Footnav>
+		<div class="slideBar">
+			<a href="javascript:;" v-if="gotoshow" class="scrollTop" @click="goTop">Top</a>
+			<a href="javascript:;" v-if="releaseshow" class="release" @click="release">发布</a>
 		</div>
 	</div>
 </template>
@@ -70,6 +69,13 @@ export default {
 
 #appBody {
 	// overflow-y: scroll;
+	position: absolute;
+	top: 0;
+	bottom: .666667rem;
+	left: 0;
+	right: 0;
+	z-index: 0;
+	width: 100%;
 }
 
 .slideBar {
