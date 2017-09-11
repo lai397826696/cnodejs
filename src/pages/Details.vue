@@ -109,7 +109,10 @@ export default {
 		})
 	},
 	beforeRouteLeave(to, from, next) {
-		this.detaildata={}
+		this.detaildata = {
+			author: {},
+			replies: []
+		},
 		next();
 	},
 	computed: {
@@ -117,7 +120,11 @@ export default {
 			'userToken',
 			'isLogin',
 			'userName'
-		])
+		]),
+		reply_id() {
+			if (this.hfData.content == '') this.hfData.id = '';
+			return this.hfData.id
+		}
 	},
 	methods: {
 		collectfn() {
@@ -161,44 +168,30 @@ export default {
 				alert("回复内容不能为空")
 				return false;
 			}
-			if (!!this.id && !!this.name) {
-				this.$http.post(_this.$api + '/topic/' + _this.id + '/replies', {
-					accesstoken: _this.userToken,
-					content: _this.hfData.content,
-					reply_id: _this.hfData.id
-				}).then((res) => {
-					if (res.data.success) {
-						_this.$http({
-							url: _this.$api + "/topic/" + _this.id,
-							params: {
-								accesstoken: _this.userToken
-							}
-						}).then(function(response) {
-							_this.detaildata = response.data.data;
-							_this.hfData.content = "";
-							_this.scrollfn();
-						})
-					}
-				})
-			} else {
-				this.$http.post(_this.$api + '/topic/' + _this.id + '/replies', {
-					accesstoken: _this.userToken,
-					content: _this.hfData.content,
-				}).then((res) => {
-					if (res.data.success) {
-						_this.$http({
-							url: _this.$api + "/topic/" + _this.id,
-							params: {
-								accesstoken: _this.userToken
-							}
-						}).then(function(response) {
-							_this.detaildata = response.data.data;
-							_this.hfData.content = "";
-							_this.scrollfn();
-						})
-					}
-				})
+			// https://github.com/lai397826696/cnodejs
+			let obj = {
+				accesstoken: _this.userToken,
+				content: _this.hfData.content + '\r -–来自白白的 vue-cnode 1.0'
+				// content: _this.hfData.content + '&lt;p&gt;–来自白白的&lt;a href=‘<a href="https://github.com/lai397826696/cnodejs">vue-cnode 1.0</a>’&gt;vue-cnode 1.0&lt;/a&gt;&lt;/p&gt'
 			}
+			if (!!this.reply_id) obj.reply_id = this.reply_id
+			console.log(obj)
+			this.hfData.content = ''
+			// return false;
+			this.$http.post(_this.$api + '/topic/' + _this.id + '/replies', obj).then((res) => {
+				if (res.data.success) {
+					_this.$http({
+						url: _this.$api + "/topic/" + _this.id,
+						params: {
+							accesstoken: _this.userToken
+						}
+					}).then(function(response) {
+						_this.detaildata = response.data.data;
+						_this.hfData.content = "";
+						_this.scrollfn();
+					})
+				}
+			})
 		},
 		zanfn(item) {
 			let _this = this;
@@ -231,27 +224,26 @@ export default {
 			return true;
 		},
 		scrollfn() {
-			let docHeight = this.$parent.$refs.app.offsetHeight;
-			let bodyheight = this.$parent.$refs.appBody.scrollHeight;
-			this.$parent.$refs.app.scrollTop = bodyheight - docHeight;
-			if ((bodyheight - docHeight) > 100) {
-				this.$parent.$refs.app.scrollTop = bodyheight - docHeight;
-				console.log(bodyheight - docHeight);
-			} else {
-				console.log("xiao yu")
-			}
+			let scrollCon = this.$parent.$refs.appBody;
+			console.log(scrollCon.scrollTop)
+			if (scrollCon.scrollTop > 0) scrollCon.scrollTop = this.$el.offsetHeight - scrollCon.offsetHeight
 		},
-		editfn(){
-			console.log(this.detaildata.content.replace(/<.*?>/gi,''));
+		editfn() {
+			console.log(this.detaildata.content.replace(/<.*?>/gi, ''));
 			this.$router.push({
 				name: 'topic',
 				query: {
 					id: this.detaildata.id,
 					title: this.detaildata.title,
 					tab: this.detaildata.tab,
-					content: this.detaildata.content.replace(/<.*?>/gi,''),
+					content: this.detaildata.content.replace(/<.*?>/gi, ''),
 				}
 			})
+		}
+	},
+	watch: {
+		hfData() {
+
 		}
 	}
 }
@@ -317,7 +309,9 @@ export default {
 		margin-bottom: .2rem;
 		line-height: 1.6;
 		font-size: .186667rem;
-		h1,h2,h3 {
+		h1,
+		h2,
+		h3 {
 			border-bottom: 1px dotted #ccc;
 		}
 	}

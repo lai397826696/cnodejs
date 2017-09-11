@@ -1,5 +1,5 @@
 <template>
-	<header class="header">
+	<header class="appHeader" v-if="goback">
 		<!--<nav class="tabflex" v-if="!goback">
 			<router-link to="/topics" class="flexlist">全部</router-link>
 			<router-link to="/good" class="flexlist">精华</router-link>
@@ -8,7 +8,7 @@
 			<router-link to="/job" class="flexlist">招聘</router-link>
 			<router-link to="/dev" class="flexlist">客户端</router-link>
 		</nav>-->
-		<nav class="detailsTab" v-if="goback">
+		<nav class="detailsTab">
 			<div class="returnBtn" @click="gobackfn">返回</div>
 		</nav>
 	</header>
@@ -35,8 +35,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.header {
-
+.appHeader {
 	background-color: #474a4f;
 }
 

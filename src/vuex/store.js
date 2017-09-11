@@ -8,7 +8,6 @@ Vue.use(Vuex)
 const state = {
 	scrollTop: 0,
 	goback: true,
-	releaseshow: false,
 	footnavshow: false,
 	isLogin: localStorage.getItem("isLogin"),
 	userToken: localStorage.getItem("userToken"),
@@ -29,9 +28,6 @@ const mutations = {
 	},
 	gobackfn(state, { show }) {
 		state.goback = show;
-	},
-	releaseshowfn(state, { show }) {
-		state.releaseshow = show;
 	},
 	footnavshowfn(state, { show }) {
 		state.footnavshow = show;

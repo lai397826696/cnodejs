@@ -21,7 +21,7 @@ export default {
 		}
 	},
 	created() {
-		for (var i = 0; i < 20; i++) {
+		for (var i = 0; i < 30; i++) {
 			this.refredata.push('我是滚动条，我要增加滚动')
 		}
 	},
@@ -36,10 +36,18 @@ export default {
 			// }
 			// console.log(done)
 			// done()
+			setTimeout(()=>{
+				done()
+			},2000)
 		},
 		onInfinite(done){
-			// console.log(done)
-			// done()
+			
+			setTimeout(()=>{
+				for (var i = 0; i < 15; i++) {
+					this.refredata.push('我是滚动条，我要增加滚动')
+				}
+				done()
+			},2000)
 		}
 	},
 
@@ -49,7 +57,7 @@ export default {
 <style lang="less" scoped>
 .scrollPage {
 	position: fixed;
-	top: 50px;
+	top: .666667rem;
 	bottom: 0;
 	left: 0;
 	right: 0;

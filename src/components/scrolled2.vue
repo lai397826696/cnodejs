@@ -73,22 +73,25 @@ export default {
         },
         touchMove(e) {
             if (this.$el.scrollTop > 0 || !this.touching) {
-                return
+                return false;
             }
             let diff = e.targetTouches[0].pageY - this.startY
             if (diff > 0) e.preventDefault()
             this.top = Math.pow(diff, 0.8) + (this.state === 2 ? this.offset : 0)
             if (this.state === 2) { // in refreshing
-                return
+                return false;
             }
             if (this.top >= this.offset) {
                 this.state = 1
+                console.log('touchmove-->state', this.state)
             } else {
                 this.state = 0
+                console.log('touchmove-->state', this.state)
             }
         },
         mouseMove(e) {
             if (this.$el.scrollTop > 0 || !this.touching) {
+                console.log(111)
                 return
             }
             let diff = e.pageY - this.startY
@@ -134,7 +137,8 @@ export default {
         refresh() {
             this.state = 2
             this.top = this.offset
-            this.onRefresh(this.refreshDone)
+            // this.onRefresh(this.refreshDone)
+            this.refreshDone()
         },
         refreshDone() {
             this.state = 0
@@ -151,6 +155,7 @@ export default {
             if (this.infiniteLoading) {
                 return
             }
+            console.log(this.$el.scrollTop)
             let outerHeight = this.$el.clientHeight
             let innerHeight = this.$el.querySelector('.scroll-inner').clientHeight
             let scrollTop = this.$el.scrollTop

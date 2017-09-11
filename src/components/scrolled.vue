@@ -1,49 +1,21 @@
 <template>
-	<div class="scrollBox" :class="{touchs: touching}" 
-		@scroll="scrollfn" 
-		@touchstart="onRefresh?touchstart($event):undefined" 
-		@touchmove="onRefresh?touchmove($event):undefined" 
-		@touchend="onRefresh?touchend($event):undefined"
-		@mousedown="onRefresh?mousedown($event):undefined" 
-		@mousemove="onRefresh?mousemove($event):undefined" 
-		@mouseup="onRefresh?mouseup($event):undefined">
-		<div class="scrollBody" ref="onlyChild" :style="{transform: 'translate3d(0px,'+ top +'px,0px)'}">
-			<div class="upLoading" v-if="!!onRefresh">
-				<!--<div class="star" :style="{transform: 'rotate('+ top +'deg)'}"></div>-->
-				<div>{{clickmsg}}</div>
-				<div class="star" @click="clickfn"></div>
+	<div class="scrollBox" v-cloak :class="{touchs: touching}" 
+		@scroll="!!onInfinite ? scrollfn($event) : undefined" 
+		@touchstart="onRefresh ? touchstart($event) : undefined" 
+		@touchmove="onRefresh ? touchmove($event) : undefined" 
+		@touchend="onRefresh ? touchend($event) : undefined" 
+		@mousedown="onRefresh ? touchstart($event) : undefined" 
+		@mousemove="onRefresh ? touchmove($event) : undefined" 
+		@mouseup="onRefresh ? touchend($event) : undefined">
+		<div class="scrollBody" ref="onlyChild" :style="{transform: 'translate3d(0px,'+ tops +'px,0px)'}">
+			<div class="Loading" v-if="!!onRefresh">
+				<div class="star" :class="{refactive : refactive}" :style="{transform: 'rotate('+ top * 3 +'deg)'}"></div>
 			</div>
 			<slot>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
-				<p>我是滚动条，我要增加滚动</p>
 			</slot>
+			<div class="Loading" v-if="!!infin">
+				<div class="star refactive"></div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -52,6 +24,10 @@
 export default {
 	name: 'scrollBox',
 	props: {
+		offset: {
+			type: Number,
+			default: 50
+		},
 		onRefresh: {
 			type: Function,
 			default: undefined
@@ -66,87 +42,84 @@ export default {
 			scrollTop: 0,
 			touching: false,
 			startY: 0,
-			isShow: false,
-			istouch: false,
-			isscroll: false,
-			clickmsg: '',
 			top: 0,
-			offset: -50
+			refactive: false,
+			infin: false,
+			loading: false
 		}
 	},
 	computed: {
+		offsets(){
+			return this.offset + 1
+		},
+		tops() {
+			return this.top - this.offsets
+		},
 	},
 	methods: {
-		clickfn(){
-			this.clickmsg='ontouchstart' in window
-		},
 		scrollfn(event) {
 			this.scrollTop = this.$el.scrollTop
 			let thish = this.$el.offsetHeight
 			let childh = this.$refs.onlyChild.scrollHeight
-			console.log(this.scrollTop)
-			if (this.$el.scrollTop == (childh - thish-this.fixtop)) {
-				console.log("end")
+			this.$emit("top", this.$el.scrollTop)
+			if(!this.infin) this.infin = true
+			if (this.$el.scrollTop == (childh - thish - this.offsets)) {
+				this.infinite()
 			}
 		},
-		touchstart(event) {
-			this.startY = event.changedTouches[0].pageY
+		touchstart(ev) {
+			if(this.top==this.offsets) return false
+			this.startY = this.pageY(ev)
 			this.touching = true
-			console.log('touchstart-->',this.startY)
 		},
-		touchmove(event) {
-			// if(this.top > 0 || this.touching) event.preventDefault()
-			let diff = event.changedTouches[0].pageY - this.startY
-			this.top = Math.pow(diff, 0.8) + this.offset
-
-			// if (this.scrollTop == 0 && this.top >= 50) this.istouch = true
-
-			console.log('touchmove-->',this.top)
+		touchmove(ev) {
+			if(this.top==this.offsets) return false
+			if (this.$el.scrollTop > 0 || !this.touching) return false
+			let diff = this.pageY(ev) - this.startY
+			if (diff > 0) ev.preventDefault()
+			this.top = Math.pow(diff, 0.8)
 		},
-		touchend(event) {
-			this.startY = this.top = 0;
-			if (!!this.istouch) {
+		touchend(ev) {
+			this.touching = false
+			if (this.top >= this.offsets) {
+				this.top = this.offsets
+				this.refactive = true
 				this.refresh()
-				this.istouch = false
+			} else {
+				this.top = 0
+				this.startY = 0
 			}
 		},
-		mousedown(event){
-			// this.startY = event.pageY
-		},
-		mousemove(event){
-			// if(this.top > 0 || !this.touching) return false;
-			// if(this.top != 0) event.preventDefault()
-			// this.moveY = event.pageY
-			// if (this.scrollTop == 0 && this.top >= 50) this.istouch = true
-		},
-		mouseup(event){
-			// this.startY = this.moveY = 0;
-			// if (!!this.istouch) {
-			// 	this.refresh()
-			// 	this.istouch = false
-			// }
+		pageY(ev){
+			return ev.changedTouches ? ev.changedTouches[0].pageY : ev.pageY
 		},
 		refresh() {
-			this.onRefresh()
+			this.onRefresh(this.refsuccess)
+		},
+		refsuccess() {
+			this.top = 0
+			this.refactive = false
+		},
+		infinite() {
+			this.onInfinite(this.infinsuccess)
+		},
+		infinsuccess(){
+			this.infin = false
 		}
 	}
 }
-
 </script>
 
 <style scoped lang="less">
 .scrollBox {
-	background-color: #fff;
-	position: relative;
-	width: 100%;
-	overflow-y: auto;
-	font-size: .213333rem;
-	position: fixed;
-	top: 50px;
+	position: absolute;
+	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
 	z-index: 1;
+	font-size: .213333rem;
+	overflow-y: auto;
 	user-select: none; //控制文字不能被选中
 	-webkit-overflow-scrolling: touch;
 	.scrollBody {
@@ -159,13 +132,13 @@ export default {
 		-webkit-overflow-scrolling: touch;
 		transition-duration: .3s;
 
-		.upLoading {
+		.Loading {
 			// margin-top: -37px;
 			width: 100%;
 			height: 40px;
 			padding: 5px 0;
 			.star {
-				margin: 11px auto;
+				margin: 7px auto;
 				width: 18px;
 				height: 18px;
 				border-radius: 50%;
@@ -173,14 +146,22 @@ export default {
 				border-right-color: transparent;
 				transform: rotate(0deg);
 			}
-		}
-		p {
-			margin: .133333rem 0;
-			padding: .133333rem;
+			.refactive {
+				animation: rotatefn .7s linear infinite;
+			}
 		}
 	}
 	&.touchs .scrollBody {
 		transition-duration: 0ms;
+	}
+
+	@keyframes rotatefn {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
 	}
 }
 </style>
