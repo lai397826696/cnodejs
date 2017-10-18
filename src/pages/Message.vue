@@ -74,7 +74,7 @@
 
 <script>
 import { mapState } from "vuex"
-import mixin from '../util/utils'
+import mixin from '../mixin/mixin'
 export default {
 	name: 'message',
 	data() {
@@ -84,17 +84,6 @@ export default {
 		}
 	},
 	mixins: [mixin],
-	beforeRouteLeave(to, from, next) {
-		// let _this = this;
-		// if (this.has_read_messages.length > 0) {
-		// 	this.$http.post(_this.$api + '/message/mark_all', {
-		// 		accesstoken: _this.userToken
-		// 	}).then(res => {
-		// 		console.log(res.data.success);
-		// 	})
-		// }
-		next();
-	},
 	computed: {
 		...mapState([
 			'userToken',
@@ -104,7 +93,7 @@ export default {
 	created() {
 		let _this = this;
 		this.$http({
-			url: _this.$api + "/messages",
+			url: "/messages",
 			params: {
 				accesstoken: _this.userToken
 			}

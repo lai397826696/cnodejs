@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
 	name: 'login',
 	data() {
@@ -20,53 +21,34 @@ export default {
 		}
 	},
 	methods: {
+		...mapMutations([
+			'loginfn'
+		]),
 		signfn() {
 			if (!!this.token) {
 				this.tokenHttp();
 			} else {
-				alert("token值不能为空")
+				this.$alert("token值不能为空");
 			}
 		},
 		tokenHttp() {
 			// 验证token登录
 			let _this = this;
-			this.$http.post(_this.$api + '/accesstoken', {
+			this.$http.post('/accesstoken', {
 				accesstoken: _this.token
 			}).then(res => {
-				// window.location.reload()
-				// window.history.go(-1)
 				if (!!res.data.success) {
-					localStorage.setItem("isLogin", true);
-					localStorage.setItem("userToken", _this.token);
-					localStorage.setItem("userId", res.data.id);
-					localStorage.setItem("userName", res.data.loginname);
-					localStorage.setItem("userAvatar", res.data.avatar_url);
-					// let info={
-					// 	isLogin: true,
-					// 	userToken: _this.token,
-					// 	userId: res.data.id,
-					// 	username: res.data.loginname,
-					// 	useravatar: res.data.avatar_url
-					// }
-					// localStorage.setItem("userinfo",JSON.stringify(info))
-					_this.goback()
-					_this.userinfo(res.data.loginname);
-					_this.token="";
+					res.data["token"] = _this.token;
+					_this.loginfn(res.data);
+					_this.goback();
+					_this.token = "";
 				}
-			}).catch(err=>{
-				alert("错误的token值")
+			}).catch(err => {
+				this.$alert("错误的token值");
 			})
 		},
-		userinfo(name) {
-			let _this = this;
-			this.$http({
-				url: _this.$api + "/user/" + name
-			}).then(res => {
-				console.log(res.data)
-			})
-		},
-		goback(){
-			this.$store.commit("login");
+		goback() {
+			// window.location.reload()
 			this.$router.go(-1);
 		}
 	}

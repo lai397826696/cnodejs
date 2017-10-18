@@ -1,14 +1,14 @@
 <template>
-	<div id="app">
+	<div id="app" ref="appBody" @scroll="scrolltop" :style="{top: !!headShow?'0.666667rem':'0', bottom: !!footnavshow?'0.666667rem':'0'}">
 		<Headers></Headers>
-		<section class="appBody" id="appBody" ref="appBody" :style="{top: !!goback?'0.666667rem':'0', bottom: !!footnavshow?'0.666667rem':'0'}">
+		<transition name="roPage" mode="">
 			<keep-alive exclude='details,userinfo'>
-				<router-view></router-view>
+				<router-view class="child-view "></router-view>
 			</keep-alive>
-		</section>
+		</transition>
 		<Footnav></Footnav>
 		<div class="slideBar">
-			<a href="javascript:;" v-if="gotoshow" class="scrollTop" @click="goTop">Top</a>
+			<a href="javascript:;" v-show="gotoshow" class="scrollTop" @click="goTop">Top</a>
 		</div>
 	</div>
 </template>
@@ -26,29 +26,26 @@ export default {
 			top: 0,
 		}
 	},
-	mounted() {
-		document.getElementById("appBody").addEventListener("scroll", this.scrolltop);
-	},
 	components: {
 		Headers,
 		Footnav,
 	},
 	computed: {
 		...mapState([
-			'goback',
+			'headShow',
 			'footnavshow',
 		])
 	},
 	methods: {
 		scrolltop() {
-			this.top = document.getElementById("appBody").scrollTop;
+			this.top = this.$refs.appBody.scrollTop;
 			this.gotoshow = this.top > 300;
 		},
 		goTop() {
 			let _this = this;
 			let top = Math.floor(this.top / 15);
 			let clear = setInterval(function() {
-				document.getElementById("appBody").scrollTop = _this.top - top;
+				_this.$refs.appBody.scrollTop = _this.top - top;
 				if (_this.top <= 0) clearInterval(clear)
 			}, 30);
 		}
@@ -57,14 +54,6 @@ export default {
 </script>
 <style lang="less" scoped>
 #app {
-	width: 100%;
-	height: 100%;
-	// overflow-y: auto;
-	// margin-bottom: 7.49625%;
-}
-
-#appBody {
-	// overflow-y: scroll;
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -73,6 +62,30 @@ export default {
 	z-index: 0;
 	width: 100%;
 	overflow-y: auto;
+	overflow-x: hidden;
+	.child-view {
+		position: absolute;
+		width: 100%;
+		transition: all .8s ease;
+		box-sizing: border-box;
+	}
+
+	.roPage-enter {
+		opacity: 0;
+		-webkit-transform: translate3d(100%, 0, 0);
+		transform: translate3d(100%, 0, 0);
+	}
+	.roPage-leave-active {
+		opacity: 0;
+		-webkit-transform: translate3d(-100%, 0, 0);
+		transform: translate3d(-100%, 0, 0);
+	}
+	// .roPage-left-leave-active,
+	// .roPage-right-enter {
+	// 	opacity: 0;
+	// 	-webkit-transform: translate(-100%, 0);
+	// 	transform: translate(-100%, 0);
+	// }
 }
 
 .slideBar {
@@ -92,13 +105,9 @@ export default {
 		background-color: rgb(33, 150, 243);
 		-webkit-appearance: none;
 	}
-	// .release {
-	// 	display: block;
-	// 	margin-bottom: .066667rem;
-	// 	height: .533333rem;
-	// 	background-color: #80bd01;
-	// 	border-radius: 50%;
-	// 	-webkit-appearance: none;
-	// }
 }
 </style>
+<style>
+
+</style>
+

@@ -1,33 +1,41 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import axios from 'axios'
-// import Mock from 'mockjs'
-
 Vue.use(Vuex)
+
+const local = (arr = '') => {
+	let star = window.localStorage.getItem("userinfo");
+	if (!!arr && star != "undefined") return JSON.parse(star)[arr];
+	return !!star ? true : false;
+}
 
 const state = {
 	scrollTop: 0,
-	goback: true,
-	footnavshow: false,
-	isLogin: localStorage.getItem("isLogin"),
-	userToken: localStorage.getItem("userToken"),
-	userId: localStorage.getItem("userId"),
-	userName: localStorage.getItem("userName"),
-	userAvatar: localStorage.getItem("userAvatar")
+	headShow: null,
+	footnavshow: null,
+	title: '',
+	isLogin: local() ? local('success') : null,
+	userToken: local() ? local('token') : null,
+	userId: local() ? local('id') : null,
+	userName: local() ? local('loginname') : null,
+	userAvatar: local() ? local('avatar_url') : null,
 }
 
 const mutations = {
-	login(state) {
+	loginfn(state, data) {
 		if (!state.isLogin) {
-			state.isLogin = localStorage.getItem("isLogin");
-			state.userToken = localStorage.getItem("userToken");
-			state.userId = localStorage.getItem("userId");
-			state.userName = localStorage.getItem("userName");
-			state.userAvatar = localStorage.getItem("userAvatar");
+			window.localStorage.setItem("userinfo", JSON.stringify(data))
+			state.isLogin = data.success;
+			state.userToken = data.token;
+			state.userId = data.id;
+			state.userName = data.loginname;
+			state.userAvatar = data.avatar_url;
 		}
 	},
-	gobackfn(state, { show }) {
-		state.goback = show;
+	headShowfn(state, { show }) {
+		state.headShow = show;
+	},
+	titlefn(state, { title }) {
+		state.title = title;
 	},
 	footnavshowfn(state, { show }) {
 		state.footnavshow = show;
@@ -38,7 +46,7 @@ const mutations = {
 }
 
 const actions = {
-
+	
 }
 const getters = {
 	footnavshows: state => {

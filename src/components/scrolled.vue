@@ -1,19 +1,12 @@
 <template>
-	<div class="scrollBox" v-cloak :class="{touchs: touching}" 
-		@scroll="!!onInfinite ? scrollfn($event) : undefined" 
-		@touchstart="onRefresh ? touchstart($event) : undefined" 
-		@touchmove="onRefresh ? touchmove($event) : undefined" 
-		@touchend="onRefresh ? touchend($event) : undefined" 
-		@mousedown="onRefresh ? touchstart($event) : undefined" 
-		@mousemove="onRefresh ? touchmove($event) : undefined" 
-		@mouseup="onRefresh ? touchend($event) : undefined">
-		<div class="scrollBody" ref="onlyChild" :style="{transform: 'translate3d(0px,'+ tops +'px,0px)'}">
-			<div class="Loading" v-if="!!onRefresh">
+	<div class="scrollBox" v-cloak :class="{touchs: touching}" @scroll="!!onInfinite ? scrollfn($event) : undefined" @touchstart="onRefresh ? touchstart($event) : undefined" @touchmove="onRefresh ? touchmove($event) : undefined" @touchend="onRefresh ? touchend($event) : undefined" @mousedown="onRefresh ? touchstart($event) : undefined" @mousemove="onRefresh ? touchmove($event) : undefined" @mouseup="onRefresh ? touchend($event) : undefined">
+		<div class="scrollBody" ref="onlyChild" :style="{transform: 'translate3d(0px,'+ tops +'rem,0px)'}">
+			<div class="Loading" ref="loading" v-if="!!onRefresh">
 				<div class="star" :class="{refactive : refactive}" :style="{transform: 'rotate('+ top * 3 +'deg)'}"></div>
 			</div>
 			<slot>
 			</slot>
-			<div class="Loading" v-if="!!infin">
+			<div class="Loading" v-show="!!infin">
 				<div class="star refactive"></div>
 			</div>
 		</div>
@@ -39,41 +32,41 @@ export default {
 	},
 	data() {
 		return {
+			offsets: this.offset,
 			scrollTop: 0,
 			touching: false,
 			startY: 0,
 			top: 0,
 			refactive: false,
 			infin: false,
-			loading: false
+			scrollStop: true,
 		}
 	},
 	computed: {
-		offsets(){
-			return this.offset + 1
-		},
 		tops() {
-			return this.top - this.offsets
+			console.log(this.top - this.offset)
+			return this.rem2px(this.top - this.offset)
 		},
 	},
 	methods: {
 		scrollfn(event) {
-			this.scrollTop = this.$el.scrollTop
-			let thish = this.$el.offsetHeight
-			let childh = this.$refs.onlyChild.scrollHeight
-			this.$emit("top", this.$el.scrollTop)
-			if(!this.infin) this.infin = true
-			if (this.$el.scrollTop == (childh - thish - this.offsets)) {
-				this.infinite()
+			this.scrollTop = this.$el.scrollTop;
+			let thish = this.$el.offsetHeight;
+			let childh = this.$refs.onlyChild.scrollHeight;
+			this.$emit("top", this.$el.scrollTop);
+			if (!this.infin) this.infin = true;
+			if ((this.$el.scrollTop + 10) >= (childh - thish - this.offsets) && this.scrollStop) {
+				this.scrollStop = false;
+				this.infinite();
 			}
 		},
 		touchstart(ev) {
-			if(this.top==this.offsets) return false
-			this.startY = this.pageY(ev)
+			if (this.top == this.offsets) return false
 			this.touching = true
+			this.startY = this.pageY(ev)
 		},
 		touchmove(ev) {
-			if(this.top==this.offsets) return false
+			if (this.top == this.offsets) return false
 			if (this.$el.scrollTop > 0 || !this.touching) return false
 			let diff = this.pageY(ev) - this.startY
 			if (diff > 0) ev.preventDefault()
@@ -90,7 +83,7 @@ export default {
 				this.startY = 0
 			}
 		},
-		pageY(ev){
+		pageY(ev) {
 			return ev.changedTouches ? ev.changedTouches[0].pageY : ev.pageY
 		},
 		refresh() {
@@ -103,8 +96,12 @@ export default {
 		infinite() {
 			this.onInfinite(this.infinsuccess)
 		},
-		infinsuccess(){
-			this.infin = false
+		infinsuccess() {
+			this.infin = false;
+			this.scrollStop = true;
+		},
+		rem2px(px) {
+			return px / 75
 		}
 	}
 }
@@ -128,17 +125,15 @@ export default {
 		right: 0;
 		top: 0;
 		z-index: 0;
-		padding: 1px 0;
 		-webkit-overflow-scrolling: touch;
 		transition-duration: .3s;
-
 		.Loading {
-			// margin-top: -37px;
+			position: relative;
 			width: 100%;
-			height: 40px;
-			padding: 5px 0;
+			height: 38px;
+			padding: 6px 0;
 			.star {
-				margin: 7px auto;
+				margin: 6px auto;
 				width: 18px;
 				height: 18px;
 				border-radius: 50%;

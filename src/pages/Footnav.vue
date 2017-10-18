@@ -52,6 +52,7 @@ export default {
 
 		.list {
 			display: block;
+			color: #333;
 		}
 		.router-link-active {
 			color: #2196f3;

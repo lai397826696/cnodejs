@@ -1,0 +1,15 @@
+
+.icon-github:before { content: '\67'; } /* 'github' */
+.icon-spin:before { content: '\6c'; } /* 'loading' */
+.icon-remove:before { content: '\5220'; } /* '删' */
+.icon-reply:before { content: '\56de'; } /* '回' */
+.icon-heart:before { content: '\5df2'; } /* '已' */
+.icon-heart-empty:before { content: '\6536'; } /* '收' */
+.icon-eye:before { content: '\67e5'; } /* '查' */
+.icon-thumbs-up:before { content: '\70b9'; } /* '点' */
+.icon-edit:before { content: '\7f16'; } /* '编' */
+.icon-comment-empty:before { content: '\8bc4'; } /* '评' */
+.icon-left-big:before { content: '\8fd4'; } /* '返' */
+.icon-star-empty:before { content: '\e803'; } /* '' */
+.icon-star:before { content: '\e804'; } /* '' */
+.icon-thumbs-up-alt:before { content: '\f164'; } /* '' */

@@ -1,6 +1,6 @@
 <template>
 	<div class="userinfoPage">
-		<div class="userBox">
+		<div class="userBox" v-cloak>
 			<div class="userImg">
 				<img :src="userinfoData.avatar_url" alt="">
 			</div>
@@ -9,7 +9,7 @@
 				<a :href="'https://github.com/'+userinfoData.githubUsername">{{'https://github.com/'+userinfoData.githubUsername}}</a>
 			</p>
 			<p class="pd10 tips">
-				<span class="floatL">创建于：{{new Date(userinfoData.create_at).toLocaleDateString()}}</span>
+				<span class="floatL">创建于：{{dateFormat(userinfoData.create_at)}}</span>
 				<span class="floatR">积分：{{userinfoData.score}}</span>
 			</p>
 		</div>
@@ -45,7 +45,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import mixin from '../util/utils'
+import mixin from '../mixin/mixin'
 export default {
 	name: 'userinfo',
 	data() {
@@ -66,18 +66,15 @@ export default {
 	beforeRouteEnter(to, from, next) {
 		next(vm => {
 			let name = to.params.name;
-			vm.$http({
-				url: vm.$api + "/user/" + name,
-			}).then(res => {
-				vm.$data.userinfoData = res.data.data;
-				vm.$data.infoDatas.recent_replies = res.data.data.recent_replies;
-				vm.$data.infoDatas.recent_topics = res.data.data.recent_topics;
-			})
-
-			vm.$http({
-				url: vm.$api + "/topic_collect/" + name,
-			}).then(res => {
-				vm.$data.infoDatas.topic_collect = res.data.data;
+			let user = (name) => vm.$http.get(`/user/${name}`);
+			let topic = (name) => vm.$http.get(`/topic_collect/${name}`);
+			vm.$http.all([user(name), topic(name)]).then(vm.$http.spread(function(users, topics) {
+				vm.userinfoData = users.data.data;
+				vm.infoDatas.recent_replies = users.data.data.recent_replies;
+				vm.infoDatas.recent_topics = users.data.data.recent_topics;
+				vm.infoDatas.topic_collect = topics.data.data;
+			})).catch(function(err){
+				throw Error(err)
 			})
 		});
 	},
@@ -134,6 +131,7 @@ export default {
 			border-radius: 50%;
 			border: 1px solid #ddd;
 			overflow: hidden;
+			background-color: #ccc;
 			img {
 				display: block;
 				width: 100%;
@@ -216,6 +214,38 @@ export default {
 				left: 33.33%;
 			}
 		}
+		@-moz-keyframes lineLR1 {
+			0% {
+				left: 0;
+			}
+			100% {
+				left: 33.33%;
+			}
+		}
+		@-ms-keyframes lineLR1 {
+			0% {
+				left: 0;
+			}
+			100% {
+				left: 33.33%;
+			}
+		}
+		@-o-keyframes lineLR1 {
+			0% {
+				left: 0;
+			}
+			100% {
+				left: 33.33%;
+			}
+		}
+		// @-khtml-keyframes lineLR1 {
+		// 	0% {
+		// 		left: 0;
+		// 	}
+		// 	100% {
+		// 		left: 33.33%;
+		// 	}
+		// }
 		@keyframes lineLR2 {
 			0% {
 				left: 33.33%;

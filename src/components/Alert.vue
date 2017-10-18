@@ -1,6 +1,7 @@
 <template>
 	<div class="alertBox" v-if="visible">
-		<div class="alterBody">
+		<div class="alertHead"></div>
+		<div class="alertBody">
 			{{message}}
 		</div>
 	</div>
@@ -14,7 +15,7 @@ export default {
 			visible: false, //是否显示
 			message: "提供默认的提示", //提示文字
 			callback: null, //关闭时回调函数
-			duration: 2000 //关闭时间，默认2s
+			duration: 1000 //关闭时间，默认1s
 		}
 	},
 	methods: {
@@ -47,18 +48,22 @@ export default {
 	right: 0;
 	z-index: 99990;
 	text-align: center;
-	background-color: rgba(0, 0, 0, .1);
+	// background-color: rgba(0, 0, 0, .1);
 
-	.alterBody {
+	.alertBody {
 		position: absolute;
 		left: 15%;
 		right: 15%;
 		top: 45%;
-		z-index: 1; // margin: 76% auto 0;
-		padding: 10px; // width: 55%;
+		z-index: 1;
+		// margin: 76% auto 0;
+		padding: 10px;
+		// width: 55%;
 		// max-width: 250px;
 		font-size: .186667rem;
+		color: #fff;
 		background-color: #fff;
+		background-color: rgba(0, 0, 0, .65);
 		// text-align: left;
 	}
 }

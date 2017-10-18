@@ -5,7 +5,6 @@ import axios from 'axios'
 import App from './App'
 import router from './router'
 import store from './vuex/store'
-import api from './assets/js/api'
 import './assets/js/dpr'
 import './assets/css/global.css'
 import VueLoading from './plugin/loading'
@@ -13,35 +12,43 @@ import VueAlter from './plugin/alert'
 
 Vue.config.productionTip = false
 
-Vue.use(VueLoading, {
-	container: '#app'
-});
+Vue.use(VueLoading);
 Vue.use(VueAlter);
 
 Vue.prototype.$http = axios
-Vue.prototype.$api = "https://cnodejs.org/api/v1";
-Vue.prototype.$token = "595447be-4e58-4ebb-9fc2-8057979109d4";
 
-Vue.prototype.goback = () => {
-	console.log("goback");
-}
+axios.defaults.baseURL = 'https://cnodejs.org/api/v1';
+axios.interceptors.request.use(function (config) {
+	Vue.prototype.$loading();
+	return config;
+}, function (error) {
+	Vue.prototype.$loading.close();
+	return Promise.reject(error);
+});
+axios.interceptors.response.use(function (response) {
+	Vue.prototype.$loading.close();
+	return response;
+}, function (error) {
+	Vue.prototype.$loading.close();
+	return Promise.reject(error);
+});
 
 
 router.beforeEach((to, from, next) => {
 	console.log(to);
-
+	//验证跳转的路由是否要登录权限
+	if (!!to.meta.islogin) {
+		if (!store.state.isLogin && to.params.name == "null") {
+			Vue.prototype.$alert("还没有登录呢~")
+			return false;
+		}
+	}
+	//是否显示固定头部
+	store.commit('headShowfn', { show: to.meta.headShow });
+	//头部文字
+	store.commit('titlefn', { title: to.meta.title });
 	//是否显示底部导航栏
-	if (!!to.meta.footnavshow) {
-		store.commit('footnavshowfn', { show: to.meta.footnavshow });
-	} else {
-		store.commit('footnavshowfn', { show: to.meta.footnavshow });
-	}
-	//是否显示返回上一步路由的顶部框
-	if (to.meta.goback) {
-		store.commit('gobackfn', { show: !to.meta.goback });
-	} else {
-		store.commit('gobackfn', { show: !to.meta.goback });
-	}
+	store.commit('footnavshowfn', { show: to.meta.footnavshow });
 	next();
 })
 

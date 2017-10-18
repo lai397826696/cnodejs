@@ -1,5 +1,7 @@
 <template>
 	<article class="detailsPage pd10" v-cloak>
+		<!-- div. -->
+
 		<header class="line-b hd">
 			<p class="tips">
 				<span class="tag tag-top" v-if="detaildata.top">置顶</span>
@@ -18,12 +20,19 @@
 				<div class="flex flexalign">
 					<p class="text">
 						<span class="tag tag-lou">作者</span>{{detaildata.author.loginname}}</p>
-					<div class="tips">{{getTime(detaildata.create_at)}}创建 · {{detaildata.visit_count}}次浏览</div>
+					<div class="tips">
+						<span class="creatTime">{{getTime(detaildata.create_at)}}</span> ·
+						<i class="font-icon icon-eye"></i> {{detaildata.visit_count}}
+					</div>
 				</div>
 			</div>
 			<div class="flex_ft" v-if="!!userToken">
-				<span class="collection" @click="collectfn">{{detaildata.is_collect?'取消收藏':'收藏'}}</span>
-				<span class="edit" @click="editfn" v-if="detaildata.author.loginname==userName">编辑</span>
+				<span class="collection" @click="collectfn">
+					<i class="font-icon" :class="[detaildata.is_collect?'icon-heart-empty':'icon-heart']"></i>
+				</span>
+				<!-- <span class="edit" @click="editfn" v-if="detaildata.author.loginname==userName">
+						<i class="font-icon icon-edit"></i>
+					</span> -->
 			</div>
 		</section>
 		<section class="detailCon" v-html="detaildata.content"></section>
@@ -37,7 +46,7 @@
 								<img :src="item.author.avatar_url" :title="item.author.avatar_url" class="img_author" />
 							</router-link>
 						</div>
-						<div class="flex_bd">
+						<div class="flex_bd ">
 							<div class="flex flexalign">
 								<p>
 									<span class="floor">#{{index+1}}</span>
@@ -48,10 +57,13 @@
 							</div>
 						</div>
 						<div class="flex_ft">
-							<div class="flex flexalign">
-								<span @click="zanfn(item)" :class="{zan: item.is_uped}">赞 {{item.ups.length}}</span>
-								<span @click="reply(item.id, item.author.loginname)">回复</span>
-							</div>
+							<span @click="zanfn(item)" class="zan" :class="{active: item.is_uped}">
+								<i class="font-icon icon-thumbs-up" :class="{'icon-thumbs-up-alt': item.is_uped}"></i>
+								{{item.ups.length}}
+							</span>
+							<span class="reply" @click="reply(item.id, item.author.loginname)">
+								<i class="font-icon icon-reply"></i>
+							</span>
 						</div>
 					</div>
 					<div class="replyCon" v-html="item.content"></div>
@@ -69,11 +81,12 @@
 				<button type="button" class="btn_hf" @click="huifufn">发送</button>
 			</div>
 		</section>
+
 	</article>
 </template>
 
 <script>
-import mixin from '../util/utils'
+import mixin from '../mixin/mixin'
 import { mapState } from 'vuex'
 export default {
 	name: 'details',
@@ -98,7 +111,7 @@ export default {
 			vm.$loading();
 			vm.id = to.params.id;
 			vm.$http({
-				url: vm.$api + "/topic/" + vm.id,
+				url: "/topic/" + vm.id,
 				params: {
 					accesstoken: vm.$store.state.userToken
 				}
@@ -113,7 +126,7 @@ export default {
 			author: {},
 			replies: []
 		},
-		next();
+			next();
 	},
 	computed: {
 		...mapState([
@@ -136,8 +149,8 @@ export default {
 		},
 		ad_collects() {
 			let _this = this;
-			this.$http.post(_this.$api + '/topic_collect/collect', {
-				accesstoken: _this.$token,
+			this.$http.post('/topic_collect/collect', {
+				accesstoken: _this.userToken,
 				topic_id: _this.id
 			}).then((res) => {
 				this.detaildata.is_collect = true;
@@ -146,8 +159,8 @@ export default {
 		},
 		de_collect() {
 			let _this = this;
-			this.$http.post(_this.$api + '/topic_collect/de_collect', {
-				accesstoken: _this.$token,
+			this.$http.post('/topic_collect/de_collect', {
+				accesstoken: _this.userToken,
 				topic_id: _this.id
 			}).then((res) => {
 				this.detaildata.is_collect = false;
@@ -155,17 +168,21 @@ export default {
 			})
 		},
 		reply(id, name) {
+			if (!this.isLogin) {
+				this.$alert("登录后才能评论")
+				return false;
+			}
 			this.hfData.id = id;
 			this.hfData.content = `@${name} ` + this.hfData.content;
 		},
 		huifufn() {
 			let _this = this;
 			if (!this.isLogin) {
-				alert("登录后才能回复");
+				this.$alert("登录后才能评论")
 				return false;
 			}
 			if (!this.hfData.content) {
-				alert("回复内容不能为空")
+				this.$alert("回复内容不能为空")
 				return false;
 			}
 			// https://github.com/lai397826696/cnodejs
@@ -178,10 +195,10 @@ export default {
 			console.log(obj)
 			this.hfData.content = ''
 			// return false;
-			this.$http.post(_this.$api + '/topic/' + _this.id + '/replies', obj).then((res) => {
+			this.$http.post('/topic/' + _this.id + '/replies', obj).then((res) => {
 				if (res.data.success) {
 					_this.$http({
-						url: _this.$api + "/topic/" + _this.id,
+						url: "/topic/" + _this.id,
 						params: {
 							accesstoken: _this.userToken
 						}
@@ -197,10 +214,10 @@ export default {
 			let _this = this;
 			if (this.isLoginfn()) {
 				if (item.author.loginname == this.userName) {
-					alert("不能帮自己点赞")
+					this.$alert("不能帮自己点赞")
 					return false;
 				}
-				this.$http.post(_this.$api + "/reply/" + item.id + "/ups", {
+				this.$http.post("/reply/" + item.id + "/ups", {
 					accesstoken: _this.userToken
 				}).then(res => {
 					if (res.data.action == "down") {
@@ -211,14 +228,13 @@ export default {
 						item.ups.push(item.id);
 					}
 				}).catch(error => {
-					console.log(error);
-					alert("发送错误")
+					this.$alert("发送错误")
 				})
 			}
 		},
 		isLoginfn() {
 			if (!this.isLogin) {
-				alert("登录后才可以点赞")
+				this.$alert("登录后才可以点赞")
 				return false;
 			}
 			return true;
@@ -262,6 +278,7 @@ export default {
 		}
 		.tag {
 			float: left;
+			margin-right: 5px;
 		}
 		.lastime {
 			float: right;
@@ -286,6 +303,9 @@ export default {
 			height: .6rem;
 			border-radius: 50%;
 		}
+		.creatTime {
+			color: #80bd01;
+		}
 		.text {
 			padding: 1px 0;
 		}
@@ -293,14 +313,12 @@ export default {
 			height: .6rem;
 		}
 		.collection {
-			display: block;
-			padding: .026667rem .133333rem;
-			background-color: #80bd01;
-			color: #fff;
+			padding: .026667rem .066667rem;
+			color: #80bd01;
 			cursor: pointer;
-			border-radius: 2px;
 		}
 		.edit {
+			padding: .026667rem .066667rem .026667rem 0;
 			cursor: pointer;
 		}
 	}
@@ -316,6 +334,7 @@ export default {
 		}
 	}
 	.tag-lou {
+		margin-right: .066667rem;
 		color: #fff;
 		background-color: #6b727d;
 	}
@@ -334,17 +353,24 @@ export default {
 			.img_author {
 				display: block;
 				margin-right: .133333rem;
-				width: .6rem;
-				height: .6rem;
+				width: .533333rem;
+				height: .533333rem;
 				border-radius: 50%;
 			}
 			.flexalign {
-				padding: .026667rem 0;
-				height: .6rem;
-				box-sizing: border-box;
+				height: .533333rem;
 			}
 			.zan {
-				color: red;
+				margin-right: .08rem;
+				padding: .066667rem 0;
+				font-size: .186667rem;
+			}
+			.zan.active .font-icon {
+				color: #80bd01;
+			}
+			.reply {
+				padding: .066667rem .026667rem;
+				font-size: .213333rem;
 			}
 			.floor {
 				margin-right: .133333rem;

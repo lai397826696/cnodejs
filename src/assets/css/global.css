@@ -259,7 +259,7 @@ a:hover {
 
 /*标签*/
 .tag {
-	margin-right: .066667rem;
+	/* margin-left: .066667rem; */
 	padding: .013333rem .053333rem;
 	font-size: 12px;
 	font-family: "Helvetica Neue";
@@ -274,7 +274,7 @@ a:hover {
 }
 .tag-good {
 	color: #fff;
-	background-color: #81c784;
+	background-color: green;
 }
 .tag-ask {
 	color: #fff;
@@ -282,14 +282,13 @@ a:hover {
 }
 .tag-share {
 	color: #fff;
-	background-color: #fb470f;
+	background-color: red;
 }
 /*标签 end*/
 
 /*Markdown数据格式 start*/
 .markdown-text {
-    /*padding: .133333rem .066667rem;*/
-    /*padding: .133333rem 0;*/
+
 }
 .markdown-text h1,
 .markdown-text h2,
@@ -337,47 +336,51 @@ a:hover {
 .markdown-text strong {
     font-weight: bold;
 }
-.markdown-text blockquote {
-    padding: 0 .133333rem;
-    color: #777;
-    border: 4px border #ddd;
-}
 .markdown-text a {
     color: #08c;
     word-wrap: break-word;
 }
 .markdown-text pre.prettyprint {
     display: block;
-    padding: 5px 7px;
+    padding: .066667rem .093333rem;
     overflow-y: auto;
-    /*word-wrap: break-word;*/
     border-radius: 3px;
     background-color: #e2e2e2;
+}
+.markdown-text .prettyprint + blockquote {
+    margin-top: .133333rem;
+} 
+.markdown-text blockquote {
+    margin: 5px 0;
+    padding: 0 .133333rem;
+    color: #777;
+    border-left: 4px solid #ddd;
+}
+.markdown-text code {
+    margin: 0 1px;
+    padding: 1px .066667rem;
+    color: #324057;
+    background-color: #efefef;
+    border-radius: 3px;
 }
 .markdown-text pre.prettyprint code {
     padding: 0;
     border-radius: 0;
     background-color: transparent;
 }
-.markdown-text code {
-    padding: 1px 5px;
-    color: #324057;
-    background-color: #efefef;
-    border-radius: 3px;
-}
 .markdown-text img {
-    display: block;
-    width: 100%;
     margin: .066667rem 0;
+    display: block;
+    max-width: 100%;
 }
 .markdown-text table {
     width: 100%;
     /*overflow: hidden;*/
 }
 .markdown-text table th {
-    padding: 5px;
-    min-width: 50px;
-    max-width: 120px;
+    padding: .066667rem;
+    min-width: .666667rem;
+    max-width: 1.6rem;
     color: #fff;
     text-align: center;
     background-color: #2196f3;
@@ -386,8 +389,8 @@ a:hover {
     /*word-break: break-all;*/
 }
 .markdown-text table td {
-    padding: 2px 5px;
-    max-width: 120px;
+    padding: .026667rem .066667rem;
+    max-width: 1.6rem;
     word-break: break-word;
     border: 1px solid #f1f1f1;
     /*word-break: break-all;*/
@@ -400,3 +403,45 @@ a:hover {
     text-align: center;
 }
 
+
+/*字体图标 start*/
+@font-face {
+    font-family: 'lxfont';
+    src: url("../font/fontello.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+.font-icon {
+    font-family: "lxfont";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    text-align: center;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-github:before { content: '\67'; } /* 'github' */
+.icon-spin:before { content: '\6c'; } /* 'loading' */
+.icon-remove:before { content: '\5220'; } /* '删除' */
+.icon-reply:before { content: '\56de'; } /* '回复' */
+.icon-heart:before { content: '\5df2'; } /* '收藏' */
+.icon-heart-empty:before { content: '\6536'; } /* '已收藏' */
+.icon-star:before { content: '\e804'; } /* '收藏2' */
+.icon-star-empty:before { content: '\e803'; } /* '已收藏2' */
+.icon-eye:before { content: '\67e5'; } /* '浏览' */
+.icon-thumbs-up:before { content: '\70b9'; } /* '点赞' */
+.icon-thumbs-up-alt:before { content: '\f164'; } /* '已点赞' */
+.icon-edit:before { content: '\7f16'; } /* '编辑' */
+.icon-comment-empty:before { content: '\8bc4'; } /* '评论' */
+.icon-left-big:before { content: '\8fd4'; } /* '返回' */
+
+
+
+/*字体图标 end*/

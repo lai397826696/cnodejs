@@ -1,15 +1,22 @@
 <template>
-	<header class="appHeader" v-if="goback">
-		<!--<nav class="tabflex" v-if="!goback">
+	<header class="appHeader" v-if="headShow">
+		<nav class="tabflex" v-if="!headShow">
 			<router-link to="/topics" class="flexlist">全部</router-link>
 			<router-link to="/good" class="flexlist">精华</router-link>
 			<router-link to="/share" class="flexlist">分享</router-link>
 			<router-link to="/ask" class="flexlist">问答</router-link>
 			<router-link to="/job" class="flexlist">招聘</router-link>
 			<router-link to="/dev" class="flexlist">客户端</router-link>
-		</nav>-->
+		</nav>
 		<nav class="detailsTab">
-			<div class="returnBtn" @click="gobackfn">返回</div>
+			<div class="leftBox">
+				<a href="javascript:;" class="returnBtn" @click="goBack"><i class="font-icon icon-left-big"></i></a>
+			</div>
+			<div class="centerBox">
+				<h3 class="title">{{title}}</h3>
+			</div>
+			<div class="rightBox">
+			</div>
 		</nav>
 	</header>
 </template>
@@ -20,14 +27,14 @@ export default {
 	name: 'header',
 	data() {
 		return {
-
 		}
 	},
 	computed: mapState([
-		'goback'
+		'headShow',
+		'title'
 	]),
 	methods: {
-		gobackfn() {
+		goBack() {
 			this.$router.go(-1)
 		}
 	}
@@ -36,6 +43,11 @@ export default {
 
 <style lang="less" scoped>
 .appHeader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 0;
 	background-color: #474a4f;
 }
 
@@ -73,18 +85,43 @@ export default {
 }
 
 .detailsTab {
-	padding: 0 .133333rem;
+	position: relative;
+	z-index: 0;
 	overflow: hidden;
-
+	.leftBox {
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		z-index: 0;
+	}
+	.rightBox {
+		position: absolute;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		z-index: 0;
+	}
+	.centerBox {
+		height: 50px;
+		line-height: 50px;
+		text-align: center;
+	}
 	.returnBtn {
 		float: left;
 		width: .666667rem;
 		height: .666667rem;
 		line-height: .666667rem;
+		font-size: 20px;
 		color: #fff;
-		font-size: .213333rem;
 		text-align: center;
 		cursor: pointer;
+	}
+	.title {
+		display: inline;
+		font-size: .24rem;
+		color: #fff;
+		text-align: center;
 	}
 }
 </style>

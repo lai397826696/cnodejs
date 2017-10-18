@@ -25,6 +25,9 @@
 				<div class="flex_bd" @click="routeSwitch('scroll')">滚动指令测试</div>
 			</div>
 			<div class="flex line-b">
+				<div class="flex_bd" @click="routeSwitch('tabbox')">tab 菜单</div>
+			</div>
+			<div class="flex line-b">
 				<div class="flex_bd" @click="signOut">退出登录</div>
 			</div>
 		</div>
@@ -49,18 +52,19 @@ export default {
 	},
 	methods: {
 		signOut() {
-			if(this.isLogin) {
+			console.log(this);
+			if (this.isLogin) {
 				localStorage.clear();
 				window.location.reload();
 			} else {
-				alert("还没有登录呢");
+				this.$alert("还没有登录呢");
 			}
 		},
 		routeSwitch(str) {
-			if(str=='login' || this.isLogin) {
+			if (str == 'login' || this.isLogin) {
 				this.$router.push({ name: str });
 			} else {
-				alert("还没有登录呢");
+				this.$alert("还没有登录呢");
 			}
 		}
 	}
@@ -100,6 +104,10 @@ export default {
 			padding: .066667rem .133333rem;
 			height: .453333rem;
 			line-height: .453333rem;
+
+			a {
+				display: block;
+			}
 		}
 	}
 }

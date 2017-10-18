@@ -7,7 +7,12 @@ Vue.use(Router)
 const LazyLoading = (name) => {
 	return resolve => require([`@/pages/${name}.vue`], resolve)
 }
-
+/*
+* headShow 是否显示头部信息
+* title 头部信息说明
+* footnavshow 是否底部导航栏
+* islogin 是否需要登录权限
+*/
 export default new Router({
 	// mode: 'history',
 	routes: [
@@ -17,11 +22,10 @@ export default new Router({
 		},
 		{
 			path: '/topics',
-			// redirect: '/',
 			name: 'topics',
 			component: LazyLoading("List"),
 			meta: {
-				goback: true,
+				headShow: false,
 				footnavshow: true
 			}
 		},
@@ -30,7 +34,9 @@ export default new Router({
 			name: 'details',
 			component: LazyLoading("Details"),
 			meta: {
-				// footnavshow: false
+				headShow: true,
+				footnavshow: false,
+				title: '帖子详情'
 			}
 		},
 		{
@@ -38,8 +44,9 @@ export default new Router({
 			name: 'topic',
 			component: LazyLoading("Topics"),
 			meta: {
-				goback: true,
+				headShow: true,
 				footnavshow: true,
+				title: ''
 			}
 		},
 		{
@@ -47,24 +54,19 @@ export default new Router({
 			name: 'user',
 			component: LazyLoading("User"),
 			meta: {
-				goback: true,
+				headShow: false,
 				footnavshow: true
 			}
 		},
 		{
-			path: '/user/info',
-			name: 'userinfo',
-			component: LazyLoading("Userinfo"),
-			meta: {
-				// footnavshow: false,
-			}
-		},
-		{
 			path: '/user/:name',
-			name: 'userinfo',
+			name: 'userinfos',
 			component: LazyLoading("Userinfo"),
 			meta: {
-				// footnavshow: false,
+				headShow: true,
+				footnavshow: false,
+				islogin: true,
+				title: '用户信息'
 			}
 		},
 		{
@@ -72,7 +74,9 @@ export default new Router({
 			name: 'login',
 			component: LazyLoading("Login"),
 			meta: {
-				// footnavshow: false
+				headShow: true,
+				footnavshow: false,
+				title: '登录'
 			}
 		},
 		{
@@ -80,7 +84,9 @@ export default new Router({
 			name: 'message',
 			component: LazyLoading("Message"),
 			meta: {
-				// footnavshow: false
+				headShow: true,
+				footnavshow: false,
+				title: '信息通知'
 			}
 		},
 		{
@@ -88,8 +94,19 @@ export default new Router({
 			name: 'scroll',
 			component: LazyLoading("Scroll"),
 			meta: {
-				// goback: true,
-				// footnavshow: false
+				headShow: true,
+				footnavshow: false,
+				title: '滚动条演示'
+			}
+		},
+		{
+			path: '/tabbox',
+			name: 'tabbox',
+			component: LazyLoading("tabPage"),
+			meta: {
+				headShow: true,
+				footnavshow: false,
+				title: ''
 			}
 		},
 	]

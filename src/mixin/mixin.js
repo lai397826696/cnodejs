@@ -26,6 +26,23 @@ const mixin = {
             } else {
                 return Math.floor(newtime / 3600 / 24 / 30 / 12) + "年前";
             }
+        },
+        dateFormat(time = '') {
+            if (!time) return time;
+            let timearr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+            let times = new Date(time).toString().split(" ");
+            let month;
+            for (let i = 0; i < timearr.length; i++) {
+                if (timearr[i].toLocaleLowerCase().indexOf(times[1].toLocaleLowerCase()) == 0) {
+                    if (i < 9) {
+                        month = "0" + (i + 1);
+                    } else {
+                        month = i + 1;
+                    }
+                    break;
+                }
+            }
+            return times[3] + "/" + month + "/" + times[2]
         }
     }
 }

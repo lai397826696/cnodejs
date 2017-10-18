@@ -79,7 +79,7 @@ export default {
 				if (this.tab == "dev") {
 					this.$http({
 						method: "post",
-						url: vm.$api + url,
+						url: url,
 						data: obj
 					}).then(res=>{
 						console.log(res.data.success);
@@ -97,6 +97,13 @@ export default {
 
 <style lang="less" scoped>
 .devPage {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 0;
+	background-color: #eff2f7;
 	.dev-item {
 		margin: .066667rem 0;
 		padding: .066667rem .133333rem;
@@ -124,7 +131,7 @@ export default {
 			display: block;
 			margin: 0;
 			width: 100%;
-			min-height: 4rem;
+			min-height: 2.5rem;
 			height: auto;
 			line-height: 1.6;
 		}
