@@ -1,12 +1,15 @@
 <template>
-	<div id="app" ref="appBody" @scroll="scrolltop" :style="{top: !!headShow?'0.666667rem':'0', bottom: !!footnavshow?'0.666667rem':'0'}">
-		<Headers></Headers>
-		<transition name="roPage" mode="">
-			<keep-alive exclude='details,userinfo'>
-				<router-view class="child-view "></router-view>
-			</keep-alive>
-		</transition>
-		<Footnav></Footnav>
+	<div id="app">
+		<!-- :style="{top: !!headShow?'0.666667rem':'0', bottom: !!footnavshow?'0.666667rem':'0'}" -->
+		<div id="appBody" ref="appBody" @scroll="scrolltop">
+			<Headers></Headers>
+			<transition name="roPage" mode="">
+				<keep-alive exclude='details,userinfo'>
+					<router-view class="child-view"></router-view>
+				</keep-alive>
+			</transition>
+			<Footnav></Footnav>
+		</div>
 		<div class="slideBar">
 			<a href="javascript:;" v-show="gotoshow" class="scrollTop" @click="goTop">Top</a>
 		</div>
@@ -54,20 +57,35 @@ export default {
 </script>
 <style lang="less" scoped>
 #app {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	z-index: 0;
-	width: 100%;
-	overflow-y: auto;
-	overflow-x: hidden;
+	// position: absolute;
+	// left: 0;
+	// right: 0;
+	// top: 0;
+	// bottom: 0;
+	// z-index: 0;
+	height: 100%;
+}
+#appBody {
+	// position: absolute;
+	// top: 0;
+	// bottom: 0;
+	// left: 0;
+	// right: 0;
+	// z-index: 0;
+	// width: 100%;
+	// overflow-y: auto;
+	// overflow-x: hidden;
+	display: flex;
+	flex-flow: column;
+	justify-content: space-between;
+	height: 100%;
+
 	.child-view {
-		position: absolute;
-		width: 100%;
+		// position: absolute;
+		// width: 100%;
 		transition: all .8s ease;
-		box-sizing: border-box;
+		flex: 1;
+		position: relative;
 	}
 
 	.roPage-enter {
@@ -79,8 +97,7 @@ export default {
 		opacity: 0;
 		-webkit-transform: translate3d(-100%, 0, 0);
 		transform: translate3d(-100%, 0, 0);
-	}
-	// .roPage-left-leave-active,
+	} // .roPage-left-leave-active,
 	// .roPage-right-enter {
 	// 	opacity: 0;
 	// 	-webkit-transform: translate(-100%, 0);

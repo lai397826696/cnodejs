@@ -149,16 +149,7 @@ export default {
 
 <style lang="less" scoped>
 .indexPage {
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	z-index: 0;
-	width: 100%;
-	height: 100%;
 	background-color: #eff2f7;
-	overflow-y: auto;
 }
 
 .tabflex {
@@ -240,10 +231,10 @@ export default {
 .listBox {
 	position: absolute;
 	left: 0;
+	right: 0;
 	top: 50px;
 	bottom: 0;
 	z-index: 0;
-	width: 100%;
 }
 
 .tagBox {

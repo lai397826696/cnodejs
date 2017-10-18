@@ -35,13 +35,16 @@ export default {
 
 <style lang="less" scoped>
 .navBox {
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	z-index: 1;
-	margin: 0 auto;
-	max-width: 640px;
+	// position: fixed;
+	// bottom: 0;
+	// left: 0;
+	// right: 0;
+	// z-index: 1;
+	// margin: 0 auto;
+	// max-width: 640px;
+	// flex: 1;
+	height: 50px;
+	flex-basis: 50px;
 	background-color: #fff;
 
 	.nav {

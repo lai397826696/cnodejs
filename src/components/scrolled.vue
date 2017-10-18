@@ -114,7 +114,7 @@ export default {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	z-index: 1;
+	z-index: 0;
 	font-size: .213333rem;
 	overflow-y: auto;
 	user-select: none; //控制文字不能被选中

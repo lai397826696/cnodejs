@@ -10,7 +10,9 @@
 		</nav>
 		<nav class="detailsTab">
 			<div class="leftBox">
-				<a href="javascript:;" class="returnBtn" @click="goBack"><i class="font-icon icon-left-big"></i></a>
+				<a href="javascript:;" class="returnBtn" @click="goBack">
+					<i class="font-icon icon-left-big"></i>
+				</a>
 			</div>
 			<div class="centerBox">
 				<h3 class="title">{{title}}</h3>
@@ -43,12 +45,14 @@ export default {
 
 <style lang="less" scoped>
 .appHeader {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	z-index: 0;
+	// position: fixed;
+	// top: 0;
+	// left: 0;
+	// right: 0;
+	// z-index: 0;
 	background-color: #474a4f;
+	height:50px;
+	flex-basis: 50px;
 }
 
 .tabflex {
