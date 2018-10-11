@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios';
 Vue.use(Vuex)
 
 const local = (arr = '') => {
@@ -12,7 +13,9 @@ const state = {
 	scrollTop: 0,
 	headShow: null,
 	footnavshow: null,
+	leftshow: true,
 	title: '',
+	msgCount: 0,
 	isLogin: local() ? local('success') : null,
 	userToken: local() ? local('token') : null,
 	userId: local() ? local('id') : null,
@@ -40,13 +43,32 @@ const mutations = {
 	footnavshowfn(state, { show }) {
 		state.footnavshow = show;
 	},
+	leftshowfn(state, { show }) {
+		state.leftshow = show;
+	},
 	scrollTopfn(state, { top }) {
 		state.scrollTop = top;
+	},
+	msgCountfn(state, { data }) {
+		state.msgCount = data;
+	},
+	resetMsgCount(state) {
+		state.msgCount = 0;
 	}
 }
 
 const actions = {
-	
+	msgCountfn({ commit, state }) {
+		axios.get('/message/count', {
+			params: {
+				accesstoken: state.userToken
+			}
+		}).then(res => {
+			commit('msgCountfn', res.data)
+		}).catch(error => {
+			throw new Error(error);
+		})
+	}
 }
 const getters = {
 	footnavshows: state => {

@@ -28,7 +28,7 @@
 			</div>
 			<div class="flex_ft" v-if="!!userToken">
 				<span class="collection" @click="collectfn">
-					<i class="font-icon" :class="[detaildata.is_collect?'icon-heart-empty':'icon-heart']"></i>
+					<i class="font-icon" :class="[detaildata.is_collect?'icon-heart':'icon-heart-empty']"></i>
 				</span>
 				<!-- <span class="edit" @click="editfn" v-if="detaildata.author.loginname==userName">
 						<i class="font-icon icon-edit"></i>

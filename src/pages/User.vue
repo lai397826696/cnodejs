@@ -20,12 +20,16 @@
 			</div>
 			<div class="flex line-b">
 				<div class="flex_bd" @click="routeSwitch('message')">消息通知</div>
+				<div class="flex_ft"><span class="tag" v-if="msgCount!=0">{{msgCount}}</span></div>
 			</div>
 			<div class="flex line-b">
 				<div class="flex_bd" @click="routeSwitch('scroll')">滚动指令测试</div>
 			</div>
 			<div class="flex line-b">
 				<div class="flex_bd" @click="routeSwitch('tabbox')">tab 菜单</div>
+			</div>
+			<div class="flex line-b">
+				<div class="flex_bd" @click="routeSwitch('directive')">指令</div>
 			</div>
 			<div class="flex line-b">
 				<div class="flex_bd" @click="signOut">退出登录</div>
@@ -47,7 +51,8 @@ export default {
 		...mapState([
 			'isLogin',
 			'userName',
-			'userAvatar'
+			'userAvatar',
+			'msgCount'
 		])
 	},
 	methods: {
@@ -109,6 +114,19 @@ export default {
 				display: block;
 			}
 		}
+	}
+	.tag {
+		margin-right: 10px;
+		padding: 0;
+		display: inline-block;
+		width: 18px;
+		height: 18px;
+		line-height: 18px;
+		font-size: 10px;
+		color: #fff;
+		text-align: center;
+		border-radius: 50%;
+		background-color: #f34343;
 	}
 }
 </style>

@@ -44,7 +44,6 @@ export default {
 	},
 	computed: {
 		tops() {
-			console.log(this.top - this.offset)
 			return this.rem2px(this.top - this.offset)
 		},
 	},
@@ -114,7 +113,7 @@ export default {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	z-index: 0;
+	z-index: 1;
 	font-size: .213333rem;
 	overflow-y: auto;
 	user-select: none; //控制文字不能被选中

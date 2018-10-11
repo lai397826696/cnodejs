@@ -1,5 +1,5 @@
 <template>
-	<nav class="line-t navBox" v-if="footnavshow">
+	<nav class="line-t navBox" v-show="footnavshow">
 		<div class="flex nav">
 			<div class="flex_bd">
 				<router-link to="/topics" class="list">首页</router-link>
@@ -7,9 +7,9 @@
 			<div class="flex_bd">
 				<router-link to="/topic" class="list">发表</router-link>
 			</div>
-			<!--<div class="flex_bd">
-				<router-link to="/message" class="list">消息</router-link>
-			</div>-->
+			<div class="flex_bd">
+				<router-link to="/message" class="list">消息<span class="msgTag" v-if="msgCount!=0"></span></router-link>
+			</div>
 			<div class="flex_bd">
 				<router-link to="/user" class="list">我的</router-link>
 			</div>
@@ -27,7 +27,8 @@ export default {
 	},
 	computed: {
 		...mapState([
-			'footnavshow'
+			'footnavshow',
+			'msgCount'
 		]),
 	}
 }
@@ -35,16 +36,6 @@ export default {
 
 <style lang="less" scoped>
 .navBox {
-	// position: fixed;
-	// bottom: 0;
-	// left: 0;
-	// right: 0;
-	// z-index: 1;
-	// margin: 0 auto;
-	// max-width: 640px;
-	// flex: 1;
-	height: 50px;
-	flex-basis: 50px;
 	background-color: #fff;
 
 	.nav {
@@ -54,12 +45,21 @@ export default {
 		text-align: center;
 
 		.list {
+			position: relative;
 			display: block;
 			color: #333;
 		}
 		.router-link-active {
 			color: #2196f3;
 		}
+	}
+	.msgTag {
+		position: absolute;
+		top: .133333rem;
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background-color: #f34343;
 	}
 }
 </style>
